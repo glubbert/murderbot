@@ -10,12 +10,16 @@ on_start="(?P<no>(?:don't|do\s+not)\s+)?join\s+#?(?P<channel>\w+)\s+(?:on\s+star
 reload="reload\s+(?P<thing>.+)"
 shut_down="shut\s+down"
 list_uncles="who(?:\s+is|\s+are|'s|'re)\s+your\s+(?:uncles?|aunts?)"
-
+console="console\s+(?P<command>.+)"
+last_picture="last\s+(?:pic(?:ture)?|image)"
 def shut_down_func(nick,match,target):
 	mb.tell("bye",target)
 	mb.connection.disconnect(message="fuck you all uwu")
 	sys.exit(0)
 	
+def last_picture_func(nick,match,target):
+	mb.tell(nick+": "+mb.data["stuff"]["last_picture"],target)
+
 
 def reload_func(nick,match,target):
 	mb.load(match.group('thing'))
@@ -38,7 +42,8 @@ def leave_func(nick,match,target):
 	mb.tell(nick+": ok",target)
 	mb.connection.part("#"+match.group('channel'),message="Bye losers.")
 	
-	
+def console_func(nick,match,target):
+	eval(match.group("command"))
 	
 
 def on_start_func(nick,match,target):
@@ -97,8 +102,8 @@ def type_in_func(nick,match,target):
 		mb.tell(nick+": I'll try",target)
 		
 mb.help['typing']="mb type in <options> (only available to selected few, haha losers), mb font options"
-		
-
+mb.add_command(last_picture,last_picture_func)	
+mb.add_command(console,console_func,level=2)
 mb.add_command(shut_down,shut_down_func,level=2)			
 mb.add_command(list_uncles,list_uncles_func)			
 mb.add_command(reload,reload_func,level=2)		

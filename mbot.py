@@ -77,6 +77,11 @@ try:
 except:
 	print("failed to import recognition :(")
 	traceback.print_exc()	
+try:
+	import mbpassive
+except:
+	print("failed to import passive functions :(")
+	traceback.print_exc()	
 	
 if __name__=="__main__":
 	server = "irc.rizon.sexy"

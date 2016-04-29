@@ -20,8 +20,6 @@ class mb(irc.client.SimpleIRCClient):
 	admin="glub"
 	commands=[]
 	
-	passive_commands=[]
-	
 	responses={}
 	notices=[]
 	connection=None
@@ -69,11 +67,11 @@ class mb(irc.client.SimpleIRCClient):
 	def sort_commands():
 		mb.commands=sorted(mb.commands, key=lambda k: k['priority'])
 	@staticmethod
-	def add_command(regex, action, priority=1,level=0):
+	def add_command(regex, action, priority=1,level=0,call=True):
 		pattern=re.compile(regex,flags=re.IGNORECASE)
-		command={'pattern':pattern,'action':action,'priority':priority,'level':level}
+		command={'pattern':pattern,'action':action,'priority':priority,'level':level,'call':call}
 		mb.commands.append(command)
-		
+			
 		
 		
 	@staticmethod
@@ -110,11 +108,17 @@ class mb(irc.client.SimpleIRCClient):
 		if mb.respond(message,nick,target):
 			return
 		call=re.match(mb.murdercall,message)
+		
 		if call:
 			command=call.group("command")
-		else:
-			return
+		else: 
+			command=message
+		
+		
 		for entry in mb.commands:
+			if (entry["call"] and not call) or (not entry["call"] and call):
+				continue
+
 			match=re.match(entry['pattern'], command)
 			if match:
 				params={'nick':nick,'match':match,'target':target}
@@ -128,6 +132,8 @@ class mb(irc.client.SimpleIRCClient):
 					mb.connection.send_raw("NICKSERV STATUS {}".format(nick))
 					print("sending notice: NICKSERV STATUS {}".format(nick))
 				return
+
+		
 					
 	
 
@@ -210,10 +216,6 @@ class mb(irc.client.SimpleIRCClient):
 				mb.tell(match['nick']+": who the fuck are you again",notice['target'])
 
 	
-	def kick_for_hse(nick,message):
-		return
-
-	
 	def on_pubnotice(self,connection,event):
 		nick=re.sub(mb.cstrip,"",event.source.nick)
 		print(nick)
@@ -221,23 +223,8 @@ class mb(irc.client.SimpleIRCClient):
 		print(message)
 	
 	def on_pubmsg(self,connection,event):
-		
 		nick=re.sub(mb.cstrip,"",event.source.nick)
 		message=re.sub(mb.cstrip,"",event.arguments[0])
-		
-		
-		
-		
-		if re.search("hse|homestuckexpert", message, flags=re.IGNORECASE):
-			ashts=[alias.upper() for alias in mb.data["aliases"]["ashT"]]
-			if nick=="*":
-				user=re.match("^(?P<nick>\S+)\s+",message,flags=re.IGNORECASE).group('nick')
-			else:
-				user=nick.upper()
-			if event.target=="#farts":
-				if user == "ASHT" or user in ashts:
-					connection.send_raw("KICK #farts "+nick+" nope")
-				
 		self.execute(message,nick,event.target)
 		
 	def on_privmsg(self,connection,event):

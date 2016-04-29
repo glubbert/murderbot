@@ -1,1 +1,1 @@
-{"to join": ["#mbtest", "#mbquiz", "#farts"], "quirk": ["\u0002"], "color": "\u00034", "caps": false}
+{"color": "\u00034", "caps": false, "to join": ["#mbtest", "#mbquiz", "#farts"], "quirk": ["\u0002"]}

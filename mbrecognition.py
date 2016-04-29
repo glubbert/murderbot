@@ -3,7 +3,7 @@ import urllib
 import traceback
 import re
 import json
-nsfw="n?sfw\s+(?P<url>.+)"
+nsfw="(?:n?sfw\s*(?P<url>.+)?)|((?:is|was)\s+(?:that\s+(?:link|picture|image|pic)|it|that)\s+(?:safe|sfw|nsfw))"
 tags="tags?\s+(?P<url>.+)"
 emotion="emotions?\s+(?P<url>.+)"
 def auth():
@@ -23,7 +23,11 @@ def auth():
 
 
 def nsfw_func(nick,match,target):
-	url=urllib.parse.urlencode({"url":match.group("url")})
+	link=match.group("url")
+	if not link:
+		link = mb.data["stuff"]["last_picture"]
+
+	url=urllib.parse.urlencode({"url":link})
 	
 	
 	
