@@ -11,13 +11,18 @@ help="help(?:\s+with)?(?:\s+(?P<cat>\w+))?"
 daddy="who'?s?\s+is\s+(?:ur|your)\s+daddy"
 parent="who'?s?\s+\is\s+(?:ur|your)\s+(?:father|mother|dad|parent)"
 save="save\s+(?P<thing>.+)\s+as\s+(?P<name>.+)"
-get="(?:get|fetch|gimme|give)(?:\sme)?\s+(?P<name>.+)"
+get="(?:get|fetch|gimme|give)(?:\sme)?\s+(?P<name>.+)|(?:what\s+have\s+you\s+got)"
+
 time="time"
 
 
 
 def get_func(nick,match,target):
-	name=match.group('name').lower()
+	name=match.group('name')
+	if name:
+		name=name.lower()
+	else:
+		name=".*"
 	if name in mb.data['data']:
 		mb.tell(nick+": "+mb.data['data'][name],target,True)
 	else:
@@ -28,7 +33,7 @@ def get_func(nick,match,target):
 		if results==[]:
 			mb.tell(nick+": dunno anything like that",target)
 		else:
-			mb.tell(nick+": did you mean "+" ,".join(results)+"? you shit? you dumbass?",target)
+			mb.tell(nick+": did you mean "+", ".join(results)+"? you shit? you dumbass?",target)
 			
 
 def save_func(nick,match,target):
@@ -74,6 +79,6 @@ mb.add_command(save,save_func, level=1)
 mb.add_command(help,help_func)
 mb.add_command(time,time_func)
 mb.add_command(eightball,eightball_func,priority=999)
-mb.help['8ball']=["anything that starts with mb and doesn't fit any other command is treated like an 8ball command"]
-mb.help['memos']=["mb save <something> as <name> - saves some text under <name>, mb get <name> - retrieves it"]
+mb.help['8ball']="anything that starts with mb and doesn't fit any other command is treated like an 8ball command"
+mb.help['memos']="mb save <something> as <name> - saves some text under <name>, mb get <name> - retrieves it"
 print("loaded misc")
