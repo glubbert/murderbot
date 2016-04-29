@@ -22,7 +22,7 @@ def keyword_color_func(nick,match,target):
 		hex=cdict['hex']
 		link="http://www.colourlovers.com/img/"+hex+"/600/600"
 		mb.tell(nick+": "+"#"+hex+", "+title,target)
-		mb.tell(link, target)
+		mb.tell(link, target,True)
 		return
 
 def what_color_func(nick,match,target):
@@ -38,7 +38,7 @@ def what_color_func(nick,match,target):
 	title="'"+cdict['title']+"'"
 	link="http://www.colourlovers.com/img/"+color+"/600/600"
 	mb.tell(nick+": "+title+" ",target)
-	mb.tell(link,target)
+	mb.tell(link,target,True)
 	return
 mb.add_command(what_color,what_color_func)
 mb.add_command(keyword_color,keyword_color_func)

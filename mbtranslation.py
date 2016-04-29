@@ -46,15 +46,10 @@ langs= {
     'vi' : 'Vietnamese',
 	}
 def auth(target):
-	try:
-		f=open(os.path.join(mb.path,"passwords.txt"))
-		pw=json.loads(f.read())['translate']
-		client_id=pw['client_id']
-		client_secret=pw['client_secret']
-		f.close()
-	except:
-		mb.tell("failed to load keys",target)
-		return None
+
+	client_id=mb.data['passwords']['translate']['client_id']
+	client_secret=mb.data['passwords']['translate']['client_secret']
+
 	data = urllib.parse.urlencode({
 		'client_id' : client_id,
 		'client_secret' :client_secret,

@@ -6,10 +6,7 @@ bing="bing\s+(?P<query>.+)"
 def bing_func(nick,match,target):
 	query=urllib.parse.urlencode({"Query":"'"+match.group('query')+"'"})
 	try:
-		f=open(os.path.join(mb.path,"passwords.txt"))
-		pw=json.loads(f.read())['bing']
-		key=pw['key']
-		f.close()
+		key=mb.data['passwords']['bing']['key']
 		req=urllib.request.Request("https://api.datamarket.azure.com/Bing/SearchWeb/v1/Web?"+query+"&$top=1&$format=json&Market=%27en-US%27&Adult=%27Off%27")
 		req.add_header("Authorization","Basic "+key)
 		response=urllib.request.urlopen(req).read()

@@ -110,7 +110,7 @@ def synonym_func(nick,match,target):
 	mb.tell(nick+": "+response,target)
 	return
 
-def antonym_func(nick,match):
+def antonym_func(nick,match,target):
 	word=match.group('word')
 	synsets=wn.synsets(word)
 	antonym_list=[]
@@ -169,7 +169,7 @@ def measure_func(nick,match,target):
 	mb.tell(nick+": "+response,target)
 	return
 
-mb.add_command(define,define_func)
+mb.add_command(define,define_func, priority=2)
 mb.add_command(antonym,antonym_func)
 mb.add_command(synonym,synonym_func)
 mb.add_command(measure,measure_func)

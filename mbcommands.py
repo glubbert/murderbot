@@ -6,7 +6,7 @@ type_in="(?P<no>don't\s+|do\s+not\s+)?type\s+(?:in\s+)?(?P<options>.+)"
 font_options="font\s+options"
 join="join\s+#?(?P<channel>\S+)$"
 leave="leave\s+#?(?P<channel>\S+)$"
-on_start="(?P<no>(?:don't|do\s+not)\s+)?join\s+#?(?P<channel>\S+)\s+(?:on\s+start(?:\s*up)?|automatically)"
+on_start="(?P<no>(?:don't|do\s+not)\s+)?join\s+#?(?P<channel>\w+)\s+(?:on\s+start(?:\s*up)?|automatically)"
 reload="reload\s+(?P<thing>.+)"
 shut_down="shut\s+down"
 list_uncles="who(?:\s+is|\s+are|'s|'re)\s+your\s+(?:uncles?|aunts?)"
@@ -28,19 +28,26 @@ def font_options_func(nick,match,target):
 	
 def join_func(nick,match,target):
 	mb.tell(nick+": ok",target)
+	
 	mb.connection.join("#"+match.group('channel'))
+	
+	
+
+
 def leave_func(nick,match,target):
 	mb.tell(nick+": ok",target)
 	mb.connection.part("#"+match.group('channel'),message="Bye losers.")
 	
+	
+	
+
 def on_start_func(nick,match,target):
 	channel="#"+match.group('channel')
 	if match.group('no'):
-		mb.data['options']['to join']=list(set(mb.data['options']['to join'])-set(channels))		
+		mb.data['options']['to join']=list(set(mb.data['options']['to join'])-set([channel]))
 	else:
 		mb.data['options']['to join'].append(channel)
 		mb.data['options']['to join']=list(set(mb.data['options']['to join']))
-		print(mb.data['options']['to join'])
 	mb.save('options')
 	mb.tell(nick+": ok",target)
 	

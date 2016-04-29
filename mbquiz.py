@@ -100,9 +100,6 @@ def show_quiz_stats_func(nick,match,target):
 		mb.tell(name+" stats: "+", ".join("{}:{}".format(key,val) for key,val in stats.items()),target)
 	return
 def quiz_func(nick,match,target):
-	if target=="#farts":
-		mb.tell(nick+ ": join #mbquiz for that you penis wrinkle",target)
-		return
 	if 'quiz' in mb.responses:
 		mb.tell("weak! the answer was "+mb.responses['quiz']['param']['answer'],target)
 		del mb.responses['quiz']
@@ -110,11 +107,12 @@ def quiz_func(nick,match,target):
 	response=urllib.request.urlopen(req).read().decode('utf-8')
 	data=choice(json.loads(response))
 	answer=re.sub(html_tags,"",data['answer'])
+	answer=answer.replace(r"\'","'")	
 	answer=unescape(answer)
 	mb.tell("Category: {}".format(data['category']['title']),target)
 	mb.tell(re.sub(html_tags,"",unescape(data['question']))+" Answer: "+re.sub("[a-zA-Z0-9]","*",answer),target)			
 	pattern=re.compile("^(?:murderb[o0]t|mb)?[,\s:!]*"+re.escape(answer)+"\s*$",flags=re.IGNORECASE)
-	answer_response={'func':quiz_answer,'pattern':pattern,'nick':"*",'param':{'answer':answer},'target':target}
+	answer_response={'func':quiz_answer,'pattern':pattern,'nick':".*",'param':{'answer':answer},'target':target}
 	mb.responses['quiz']=answer_response
 	print(data['question'])
 	print(data['answer'])

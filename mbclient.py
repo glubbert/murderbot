@@ -2,11 +2,26 @@ import irc.client,sys,traceback,os,re,json
 
 
 class mb(irc.client.SimpleIRCClient):
-	murdercall=re.compile("^(?:murderb[0,o]t|mb|mb[0,o]t)[\s,!?.:]+(?P<command>.+)",flags=re.IGNORECASE)
+	murdercall=re.compile(r"""
+						^
+						(?:						#prefix
+							murderb[0,o]t   
+							|mb
+							|mb[0,o]t
+						)
+						[\s,!?.:]+
+						(?P<command>.+)			#then command	
+							""",flags=re.IGNORECASE | re.VERBOSE)
+	
+	
+	cstrip=re.compile("\x1f|\x02|\x12|\x0f|\x16|\x1d|\x03(?:\d{1,3}(?:,\d{1,3})?)?", re.UNICODE)
 	path=""
 	help={}
 	admin="glub"
 	commands=[]
+	
+	passive_commands=[]
+	
 	responses={}
 	notices=[]
 	connection=None
@@ -43,8 +58,9 @@ class mb(irc.client.SimpleIRCClient):
 		if boring:
 			quirk=""
 		else:
-			quirk="".join(mb.data['options']['quirk'])
-			quirk+=mb.data['options']['color']
+			quirk=mb.data['options']['color']
+			quirk+="".join(mb.data['options']['quirk'])
+			
 			if mb.data['options']['caps']:
 				what=what.upper()
 		
@@ -73,7 +89,7 @@ class mb(irc.client.SimpleIRCClient):
 	@staticmethod
 	def respond(message,nick,target):
 		for key,response in mb.responses.items():
-			if response['nick']==nick or response['nick']=="*":
+			if re.search(response['nick'],nick) or response['nick']=="*":
 				match=re.match(response['pattern'],message)
 				if match:
 					if 'param' in response.keys():
@@ -88,6 +104,9 @@ class mb(irc.client.SimpleIRCClient):
 		
 	@staticmethod
 	def execute(message,nick,target):
+	
+		
+	
 		if mb.respond(message,nick,target):
 			return
 		call=re.match(mb.murdercall,message)
@@ -144,9 +163,15 @@ class mb(irc.client.SimpleIRCClient):
 		mb.load('quiz_stats')
 		mb.load('quotes')
 		mb.load('aliases')
-		
+		mb.load('data')
+		mb.load('passwords')
+		mb.load('interview')
+		mb.load('interview_stats')
+		mb.load('interview_questions')
 	def on_welcome(self, connection, event):
+		print("on_welcome: "+event.arguments[0])
 		mb.connection=connection
+		connection.send_raw("NICKSERV IDENTIFY JOIrE0UNO");
 		for channel in mb.data['options']['to join']:
 			connection.join(channel)
 
@@ -154,6 +179,7 @@ class mb(irc.client.SimpleIRCClient):
 	
 
 	def on_privnotice(self,connection,event):
+		print("private notice: "+event.arguments[0])
 		notice=mb.notices[-1:]
 		if notice:
 			notice=notice[0]
@@ -170,7 +196,7 @@ class mb(irc.client.SimpleIRCClient):
 			
 			elif match['nick'] in mb.data['uncles']:
 				if notice['level']>1:
-					mb.tell(match['nick']+"You're not my real dad!")
+					mb.tell(match['nick']+" You're not my real dad!",notice['target'])
 				else:
 					if int(match['status'])==3:
 						mb.execute_command(notice['func'],**notice['params'])
@@ -183,19 +209,47 @@ class mb(irc.client.SimpleIRCClient):
 				print('dissing the chump')
 				mb.tell(match['nick']+": who the fuck are you again",notice['target'])
 
-		
+	
+	def kick_for_hse(nick,message):
+		return
 
 	
+	def on_pubnotice(self,connection,event):
+		nick=re.sub(mb.cstrip,"",event.source.nick)
+		print(nick)
+		message=re.sub(mb.cstrip,"",event.arguments[0])
+		print(message)
 	
 	def on_pubmsg(self,connection,event):
-		nick=event.source.nick
-		message=event.arguments[0]	
+		
+		nick=re.sub(mb.cstrip,"",event.source.nick)
+		message=re.sub(mb.cstrip,"",event.arguments[0])
+		
+		
+		
+		
+		if re.search("hse|homestuckexpert", message, flags=re.IGNORECASE):
+			ashts=[alias.upper() for alias in mb.data["aliases"]["ashT"]]
+			if nick=="*":
+				user=re.match("^(?P<nick>\S+)\s+",message,flags=re.IGNORECASE).group('nick')
+			else:
+				user=nick.upper()
+			if event.target=="#farts":
+				if user == "ASHT" or user in ashts:
+					connection.send_raw("KICK #farts "+nick+" nope")
+				
 		self.execute(message,nick,event.target)
 		
 	def on_privmsg(self,connection,event):
-		nick=event.source.nick
-		message=event.arguments[0]	
-		mb.execute(message,nick,event.target)
+		nick=re.sub(mb.cstrip,"",event.source.nick)
+		message=re.sub(mb.cstrip,"",event.arguments[0])
+		try:
+			print("(priv)"+nick+": "+message)
+		except:
+			traceback.print_exc()
+		
+		mb.execute(message,nick,event.source.nick)
+
 
 				
 	def on_disconnect(self, connection, event):

@@ -1,5 +1,5 @@
 from mbclient import mb
-import sys,traceback
+import sys,traceback,irc
 try:
 	import mbcommands
 except:
@@ -50,11 +50,38 @@ try:
 except:
 	print("failed to import misc :(")
 	traceback.print_exc()
+
+try:
+	import mbcalc
+except:
+	print("failed to import calculator :(")
+	traceback.print_exc()	
+
+try:
+	import mbupdates
+except:
+	print("failed to import updates :(")
+	traceback.print_exc()	
+try:
+	import mbgifs
+except:
+	print("failed to import gifs :(")
+	traceback.print_exc()	
+try:
+	import mbinterview
+except:
+	print("failed to import interview :(")
+	traceback.print_exc()	
+try:
+	import mbrecognition
+except:
+	print("failed to import recognition :(")
+	traceback.print_exc()	
 	
 if __name__=="__main__":
 	server = "irc.rizon.sexy"
 	port = 6667
-	nickname = "murderb0t"
+	nickname = "MURDERB0T"
 	mbot = mb()
 	mb.sort_commands()
 	try:
