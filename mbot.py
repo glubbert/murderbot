@@ -84,14 +84,5 @@ except:
 	traceback.print_exc()	
 	
 if __name__=="__main__":
-	server = "irc.rizon.sexy"
-	port = 6667
-	nickname = "MURDERB0T"
 	mbot = mb()
-	mb.sort_commands()
-	try:
-		mbot.connect(server, port, nickname)
-	except irc.client.ServerConnectionError as x:
-		print(x)
-		sys.exit(1)
 	mbot.start()

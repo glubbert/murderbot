@@ -2,6 +2,9 @@ import irc.client,sys,traceback,os,re,json
 
 
 class mb(irc.client.SimpleIRCClient):
+	server = "irc.rizon.sexy"
+	port = 6667
+	nickname = "MURDERB0T"
 	murdercall=re.compile(r"""
 						^
 						(?:						#prefix
@@ -174,6 +177,9 @@ class mb(irc.client.SimpleIRCClient):
 		mb.load('interview')
 		mb.load('interview_stats')
 		mb.load('interview_questions')
+		mb.sort_commands()
+		self.try_connecting()
+		
 	def on_welcome(self, connection, event):
 		print("on_welcome: "+event.arguments[0])
 		mb.connection=connection
@@ -237,7 +243,13 @@ class mb(irc.client.SimpleIRCClient):
 		
 		mb.execute(message,nick,event.source.nick)
 
-
+	def try_connecting(self):
+		try:
+			self.connect(mb.server, mb.port, mb.nickname)
+		except irc.client.ServerConnectionError as x:
+			print(x)
+			sys.exit(1)
+		
 				
 	def on_disconnect(self, connection, event):
-		sys.exit(0)
+		self.try_connecting()
