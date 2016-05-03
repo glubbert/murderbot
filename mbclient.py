@@ -2,7 +2,7 @@ import irc.client,sys,traceback,os,re,json
 
 
 class mb(irc.client.SimpleIRCClient):
-	server = "irc.rizon.sexy"
+	server = "irc.uworld.se"
 	port = 6667
 	nickname = "MURDERB0T"
 	murdercall=re.compile(r"""
@@ -252,4 +252,5 @@ class mb(irc.client.SimpleIRCClient):
 		
 				
 	def on_disconnect(self, connection, event):
+		print("disconnected.......")
 		self.try_connecting()

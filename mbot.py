@@ -1,5 +1,5 @@
 from mbclient import mb
-import sys,traceback,irc
+import sys,traceback,irc,logging
 try:
 	import mbcommands
 except:
@@ -84,5 +84,6 @@ except:
 	traceback.print_exc()	
 	
 if __name__=="__main__":
+	#logging.basicConfig(filename="murder.log", level=logging.DEBUG)
 	mbot = mb()
 	mbot.start()

@@ -17,6 +17,37 @@ time="time"
 
 
 
+
+
+hi="(?:hi+|he+llo+|he+y|yo+)[\s,!]+(?:mb|murderb(?:0|o)t|mbot)[\s!\.]*"
+mbhi="(?:hi+|he+llo+|he+y|yo+)[!\s\.]*"
+
+thank="(?:tha+nks?\s*(?:you)?)[\s,!]+(?:mb|murderb(?:0|o)t|mbot)[\s!\.]*"
+mbthank="(?:tha+nks?\s*(?:you)?)[!\s\.]*"
+
+
+urwelc=["pay me","love u bb","you're welcome","that's it??? for all this hard work??","what would you boobs do without me"]
+hello=["bye","shut up","go away","not you again","hi","hello","uh huh","sigh"]
+
+
+
+
+
+def hi_func(nick,match,target):
+	mb.tell(nick+": "+choice(hello),target)
+
+
+def thank_func(nick,match,target):
+	mb.tell(nick+": "+choice(urwelc),target)	
+
+
+
+
+
+
+
+
+
 def get_func(nick,match,target):
 	name=match.group('name')
 	if name:
@@ -66,7 +97,11 @@ def parent_func(nick,match,target):
 def daddy_func(nick,match,target):
 	mb.tell("ew what the fuck is wrong with you",target)
 	
-	
+mb.add_command(hi,hi_func,call=False)	
+mb.add_command(thank,thank_func,call=False)	
+mb.add_command(mbhi,hi_func)	
+mb.add_command(mbthank,thank_func)	
+
 	
 	
 	
