@@ -2,6 +2,7 @@ __pycache__
 passwords.json
 quotes.json
 options.json
+interview.json
 aliases.json
 quiz_stats.json
 interview_stats.json
