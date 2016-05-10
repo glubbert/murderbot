@@ -1,8 +1,6 @@
 from mbclient import mb
 import json,urllib,os
-
 bing="bing\s+(?P<query>.+)"
-
 def bing_func(nick,match,target):
 	query=urllib.parse.urlencode({"Query":"'"+match.group('query')+"'"})
 	try:

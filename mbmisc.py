@@ -33,16 +33,12 @@ hello=["bye","shut up","go away","not you again","hi","hello","uh huh","sigh"]
 
 def yiff_pick(match):
 	string = match.group(1)
-	print(string)
 	quick = re.search("\|",string)
 	if quick:
 		options=string.split("|")
 	else:
 		options = mb.data['yiff'][string]
-	
-	
 	res = choice(options)
-	print(res)
 	return res
 	
 
