@@ -1,8 +1,8 @@
-passwords.txt
 __pycache__
-quotes.txt
-aliases.txt
-quiz_stats.txt
-interview_stats.txt
-uncles.txt
+passwords.json
+quotes.json
+aliases.json
+quiz_stats.json
+interview_stats.json
+uncles.json
 murder.log

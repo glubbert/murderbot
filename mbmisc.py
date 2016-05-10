@@ -12,6 +12,7 @@ daddy="who'?s?\s+is\s+(?:ur|your)\s+daddy"
 parent="who'?s?\s+\is\s+(?:ur|your)\s+(?:father|mother|dad|parent)"
 save="save\s+(?P<thing>.+)\s+as\s+(?P<name>.+)"
 get="(?:get|fetch|gimme|give)(?:\sme)?\s+(?P<name>.+)|(?:what\s+have\s+you\s+got)"
+yiff="yiff\s+(?P<who>.+)"
 
 time="time"
 
@@ -30,6 +31,37 @@ urwelc=["pay me","love u bb","you're welcome","that's it??? for all this hard wo
 hello=["bye","shut up","go away","not you again","hi","hello","uh huh","sigh"]
 
 
+def yiff_pick(match):
+	string = match.group(1)
+	print(string)
+	quick = re.search("\|",string)
+	if quick:
+		options=string.split("|")
+	else:
+		options = mb.data['yiff'][string]
+	
+	
+	res = choice(options)
+	print(res)
+	return res
+	
+
+def yiff_func(nick,match,target):
+	who=match.group("who")
+	if who == "me":
+		who = nick
+	elif who in ["yourself","urself"]:
+		who = mb.nickname
+	mb.data['yiff']['caller']=[nick];
+	mb.data['yiff']['target']=[who];
+	too_much=20
+	pattern = re.compile("{([|\w_]+)}")
+	yiff = choice(mb.data['yiff']['yiff'])
+	while re.search("{",yiff) and too_much>0:
+		too_much -= 1	
+		yiff=re.sub(pattern,yiff_pick,yiff)
+	mb.tell(yiff,target,action=True)
+	
 
 
 
@@ -107,7 +139,7 @@ mb.add_command(mbthank,thank_func)
 	
 mb.add_command(daddy,daddy_func,priority=0)	
 mb.add_command(parent,parent_func)	
-
+mb.add_command(yiff,yiff_func)	
 mb.add_command(get,get_func)
 mb.add_command(save,save_func, level=1)
 
@@ -115,5 +147,5 @@ mb.add_command(help,help_func)
 mb.add_command(time,time_func)
 mb.add_command(eightball,eightball_func,priority=999)
 mb.help['8ball']="anything that starts with mb and doesn't fit any other command is treated like an 8ball command"
-mb.help['memos']="mb save <something> as <name> - saves some text under <name>, mb get <name> - retrieves it"
+mb.help['memos']="mb yiff <someone>, mb save <something> as <name> - saves some text under <name>, mb get <name> - retrieves it"
 print("loaded misc")

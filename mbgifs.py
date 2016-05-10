@@ -1,10 +1,15 @@
 from mbclient import mb
 import json,urllib
 from random import choice
-show_me="^show\s+me\s+(?P<query>.+)"
+show_me="^show\s+me\s+(?P<query>.*?)(?:\s+#(?P<index>\d+))?$"
 
 
 def show_me_func(nick,match,target):
+	index = match.group('index')
+	if not index:
+		index = 0
+	else:
+		index = int(index)
 	headers={'X-Mashape-Key': '6SRh5ZIyhhmshOjLLIEVlfRzZR3Mp1KJgLsjsny2Vq36opmhI6',
 			'Accept':'application/json'}
 	query=urllib.parse.urlencode({"q":match.group('query')})
@@ -16,7 +21,7 @@ def show_me_func(nick,match,target):
 	if results==[]:
 		mb.tell(nick+": none of that stuff", target)
 		return
-	data=choice(results)
+	data=results[index]
 	gif="https://media.giphy.com/media/{id}/giphy.gif".format(id=data['id'])
 
 	mb.tell(nick+": "+gif,target,True)

@@ -55,7 +55,8 @@ class mb(irc.client.SimpleIRCClient):
 		mb.data[what]=towhat
 		mb.save(what)
 	@staticmethod
-	def tell(what,target,boring=False):
+
+	def tell(what,target,boring=False, action=False):
 		if boring:
 			quirk=""
 		else:
@@ -65,7 +66,13 @@ class mb(irc.client.SimpleIRCClient):
 			if mb.data['options']['caps']:
 				what=what.upper()
 		
-		mb.connection.privmsg(target,quirk+what)
+		what=quirk+what
+		
+		if action:
+			what = "\u0001ACTION "+what+"\u0001"
+		
+		
+		mb.connection.send_raw("PRIVMSG "+target+" :"+what)
 	@staticmethod
 	def sort_commands():
 		mb.commands=sorted(mb.commands, key=lambda k: k['priority'])
@@ -145,7 +152,7 @@ class mb(irc.client.SimpleIRCClient):
 	@staticmethod
 	def load(what):
 		try:
-			f=open(os.path.join(mb.path,what+'.txt'),'r')
+			f=open(os.path.join(mb.path,what+'.json'),'r')
 			mb.data[what]=json.loads(f.read())
 			f.close()
 		except:
@@ -156,7 +163,7 @@ class mb(irc.client.SimpleIRCClient):
 	@staticmethod
 	def save(what):
 		try:
-			f=open(os.path.join(mb.path,what+'.txt'),'w')
+			f=open(os.path.join(mb.path,what+'.json'),'w')
 			f.write(json.dumps(mb.data[what]))
 			f.close()
 		except:
@@ -177,6 +184,7 @@ class mb(irc.client.SimpleIRCClient):
 		mb.load('interview')
 		mb.load('interview_stats')
 		mb.load('interview_questions')
+		mb.load('yiff')
 		mb.sort_commands()
 		self.try_connecting()
 		
