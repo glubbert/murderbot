@@ -172,7 +172,7 @@ class mb(irc.client.SimpleIRCClient):
 
 	def __init__(self):
 		irc.client.SimpleIRCClient.__init__(self)
-		mb.path=os.path.dirname(os.path.realpath('__file__'))+"\\"
+		mb.path=os.path.dirname(os.path.realpath('__file__'))
 		mb.load('uncles')
 		mb.load('options')
 		mb.load('stuff')
