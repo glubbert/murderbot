@@ -1,5 +1,6 @@
 from mbclient import mb
-import urllib
+import urllib.request
+import urllib.parse
 import traceback
 import re
 import json
