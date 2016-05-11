@@ -15,7 +15,7 @@ def auth():
 	
 	req = urllib.request.Request("https://api.clarifai.com/v1/token",data = data)
 	try:
-		response = json.loads(urllib.request.urlopen(req).readall().decode("utf-8"))
+		response = json.loads(urllib.request.urlopen(req).read().decode("utf-8"))
 	except:
 		traceback.print_exc()
 		return ""
