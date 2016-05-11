@@ -2,7 +2,7 @@ from mbclient import mb
 from random import choice
 from datetime import datetime
 import re
-
+import shared
 
 #for later maybe, need to redo how private notices are received for this
 #who_will="who(?:\s+and\s+(?P<second>who))?(?P<plural>\s+are|\s+were|'re)?(?P<dowhat>.+)"
@@ -13,9 +13,9 @@ parent="who'?s?\s+\is\s+(?:ur|your)\s+(?:father|mother|dad|parent)"
 save="save\s+(?P<thing>.+)\s+as\s+(?P<name>.+)"
 get="(?:get|fetch|gimme|give)(?:\sme)?\s+(?P<name>.+)|(?:what\s+have\s+you\s+got)"
 yiff="yiff\s+(?P<who>.+)"
-coin = "choose\s+(?P<first>[^\,]+)\s*\,\s*(?P<second>[^\,]+)$"
+coin = "choose\s+(?P<what>.+)$"
 seen = "(?:have\s+you\s+)?seen\s+(?P<who>\S+)"
-send_message="tell\s+(?P<who>\S+)\s+(?P<what>\S+)"
+send_message="tell\s+(?P<who>\S+)\s+(?P<what>.+)"
 time="time"
 
 
@@ -34,9 +34,11 @@ hello=["bye","shut up","go away","not you again","hi","hello","uh huh","sigh"]
 
 
 def coin_func(nick,match,target):
-	first = match.group('first')
-	second = match.group('second')
-	mb.tell(nick+ ": "+mb.choice([first,second]),target)
+	what = match.group('what')
+	p=re.compile("(?:and|or|\s|\.|,)+")
+	options = p.split(what)
+	
+	mb.tell(nick+ ": "+choice(options),target)
 
 
 def yiff_pick(match):
@@ -133,26 +135,44 @@ def parent_func(nick,match,target):
 def daddy_func(nick,match,target):
 	mb.tell("ew what the fuck is wrong with you",target)
 
+	
+	
 
+	
+	
 
 def seen_func(nick,match,target):
 	who = match.group('who')
 	
+	
 	if who in mb.data['logs']:
-		mb.tell(nick+": "+who+" was here on "+mb.data['logs'][who]['date']+", saying '"+mb.data['logs'][who]['message']+"'"+,target)
+		date = datetime.now()
+		when = mb.data['logs'][who]['date']
+		now=shared.time_dict(date)
+		
+		time=shared.time_diff(now,when)
+		mb.tell(nick+": "+who+" was here "+time+", saying '"+mb.data['logs'][who]['message']+"'",target)
 	else:
+	
 		mb.tell(nick+": never heard of that douche",target)
 
 def send_message_func(nick,match,target):
 	who = match.group('who')
+	date = datetime.now()
+	when=shared.time_dict(date)
+	
 	message = match.group('what')
 	if not who in mb.data['logs']:
 		mb.data['logs'][who]={}
 
-	if not messages in mb.data['logs'][who]:	
+	if not 'messages' in mb.data['logs'][who]:	
 		mb.data['logs'][who]['messages']=[]
 		
-	mb.data['logs'][who]['messages'].append({'text':message, 'nick': nick})
+	mb.data['logs'][who]['messages'].append({'text':message, 'nick': nick,'date':when})
+	
+
+	
+	mb.tell(nick+": jeez FINE I'll tell em",target)
 	mb.save('logs')
 	
 	

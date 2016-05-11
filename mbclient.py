@@ -77,7 +77,7 @@ class mb(irc.client.SimpleIRCClient):
 	def sort_commands():
 		mb.commands=sorted(mb.commands, key=lambda k: k['priority'])
 	@staticmethod
-	def add_command(regex, action, priority=1,level=0,call=True,passive=False):
+	def add_command(regex, action, priority=10,level=0,call=True,passive=False):
 		pattern=re.compile(regex,flags=re.IGNORECASE)
 		command={'pattern':pattern,'action':action,'priority':priority,'level':level,'call':call,'passive':passive}
 		mb.commands.append(command)
@@ -125,7 +125,7 @@ class mb(irc.client.SimpleIRCClient):
 		
 		
 		for entry in mb.commands:
-			if entry["call"] and not call):
+			if entry["call"] and not call:
 				continue
 
 			match=re.match(entry['pattern'], command)
@@ -140,6 +140,7 @@ class mb(irc.client.SimpleIRCClient):
 					mb.notices.append(notice)
 					mb.connection.send_raw("NICKSERV STATUS {}".format(nick))
 					print("sending notice: NICKSERV STATUS {}".format(nick))
+				print(entry['passive'])
 				if not entry['passive']:
 					return
 
