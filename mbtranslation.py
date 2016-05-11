@@ -1,3 +1,4 @@
+# coding: utf-8
 from mbclient import mb
 import urllib,os
 import json

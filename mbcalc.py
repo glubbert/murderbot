@@ -1,3 +1,4 @@
+# coding: utf-8
 from mbclient import mb
 import math
 import re

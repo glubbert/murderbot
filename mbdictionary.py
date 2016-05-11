@@ -1,3 +1,4 @@
+# coding: utf-8
 from mbot import mb
 from random import choice
 from nltk.corpus import wordnet as wn
