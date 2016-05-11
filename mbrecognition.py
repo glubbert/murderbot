@@ -42,7 +42,7 @@ def nsfw_func(nick,match,target):
 	req = urllib.request.Request("https://api.clarifai.com/v1/tag?model=nsfw-v1.0&{}".format(url));
 	req.add_header("Authorization","Bearer "+access_token);
 	try:
-		response = json.loads(urllib.request.urlopen(req).readall().decode("utf-8"));
+		response = json.loads(urllib.request.urlopen(req).read().decode("utf-8"));
 	except:
 		mb.tell(nick+": something aint right",target)
 		traceback.print_exc()
@@ -62,7 +62,7 @@ def tags_func(nick,match,target):
 	req = urllib.request.Request("https://api.clarifai.com/v1/tag?{}".format(url));
 	req.add_header("Authorization","Bearer "+access_token);
 	try:
-		response = json.loads(urllib.request.urlopen(req).readall().decode("utf-8"));
+		response = json.loads(urllib.request.urlopen(req).read().decode("utf-8"));
 	except:
 		mb.tell(nick+": something aint right",target)
 		traceback.print_exc()
@@ -80,7 +80,7 @@ def emotion_func(nick,match,target):
 	req.add_header("Ocp-Apim-Subscription-Key","f40e7a9a0e944f22b1bf91175c0d7e9d");
 	req.add_header('Content-Type', 'application/json')
 	try:
-		response = json.loads(urllib.request.urlopen(req).readall().decode("utf-8"));
+		response = json.loads(urllib.request.urlopen(req).read().decode("utf-8"));
 	except:
 		mb.tell(nick+": something aint right",target)
 		traceback.print_exc()
