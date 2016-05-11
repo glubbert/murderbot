@@ -77,9 +77,9 @@ class mb(irc.client.SimpleIRCClient):
 	def sort_commands():
 		mb.commands=sorted(mb.commands, key=lambda k: k['priority'])
 	@staticmethod
-	def add_command(regex, action, priority=1,level=0,call=True):
+	def add_command(regex, action, priority=1,level=0,call=True,passive=False):
 		pattern=re.compile(regex,flags=re.IGNORECASE)
-		command={'pattern':pattern,'action':action,'priority':priority,'level':level,'call':call}
+		command={'pattern':pattern,'action':action,'priority':priority,'level':level,'call':call,'passive':passive}
 		mb.commands.append(command)
 			
 		
@@ -105,7 +105,6 @@ class mb(irc.client.SimpleIRCClient):
 					else:
 						param=None
 					params={'nick':nick,'match':match,'target':response['target'],'param':param}
-					print(params)
 					mb.execute_command(response['func'],**params)
 					return True
 		return False
@@ -126,7 +125,7 @@ class mb(irc.client.SimpleIRCClient):
 		
 		
 		for entry in mb.commands:
-			if (entry["call"] and not call) or (not entry["call"] and call):
+			if entry["call"] and not call):
 				continue
 
 			match=re.match(entry['pattern'], command)
@@ -141,7 +140,8 @@ class mb(irc.client.SimpleIRCClient):
 					mb.notices.append(notice)
 					mb.connection.send_raw("NICKSERV STATUS {}".format(nick))
 					print("sending notice: NICKSERV STATUS {}".format(nick))
-				return
+				if not entry['passive']:
+					return
 
 		
 					
@@ -185,6 +185,7 @@ class mb(irc.client.SimpleIRCClient):
 		mb.load('interview_stats')
 		mb.load('interview_questions')
 		mb.load('yiff')
+		mb.load('logs')
 		mb.sort_commands()
 		self.try_connecting()
 		

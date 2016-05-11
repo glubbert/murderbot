@@ -1,6 +1,7 @@
 *.pyc
 __pycache__
 passwords.json
+logs.json
 quotes.json
 options.json
 interview.json

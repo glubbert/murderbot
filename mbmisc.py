@@ -13,7 +13,9 @@ parent="who'?s?\s+\is\s+(?:ur|your)\s+(?:father|mother|dad|parent)"
 save="save\s+(?P<thing>.+)\s+as\s+(?P<name>.+)"
 get="(?:get|fetch|gimme|give)(?:\sme)?\s+(?P<name>.+)|(?:what\s+have\s+you\s+got)"
 yiff="yiff\s+(?P<who>.+)"
-
+coin = "choose\s+(?P<first>[^\,]+)\s*\,\s*(?P<second>[^\,]+)$"
+seen = "(?:have\s+you\s+)?seen\s+(?P<who>\S+)"
+send_message="tell\s+(?P<who>\S+)\s+(?P<what>\S+)"
 time="time"
 
 
@@ -29,6 +31,12 @@ mbthank="(?:tha+nks?\s*(?:you)?)[!\s\.]*"
 
 urwelc=["pay me","love u bb","you're welcome","that's it??? for all this hard work??","what would you boobs do without me"]
 hello=["bye","shut up","go away","not you again","hi","hello","uh huh","sigh"]
+
+
+def coin_func(nick,match,target):
+	first = match.group('first')
+	second = match.group('second')
+	mb.tell(nick+ ": "+mb.choice([first,second]),target)
 
 
 def yiff_pick(match):
@@ -124,10 +132,36 @@ def parent_func(nick,match,target):
 	
 def daddy_func(nick,match,target):
 	mb.tell("ew what the fuck is wrong with you",target)
+
+
+
+def seen_func(nick,match,target):
+	who = match.group('who')
 	
+	if who in mb.data['logs']:
+		mb.tell(nick+": "+who+" was here on "+mb.data['logs'][who]['date']+", saying '"+mb.data['logs'][who]['message']+"'"+,target)
+	else:
+		mb.tell(nick+": never heard of that douche",target)
+
+def send_message_func(nick,match,target):
+	who = match.group('who')
+	message = match.group('what')
+	if not who in mb.data['logs']:
+		mb.data['logs'][who]={}
+
+	if not messages in mb.data['logs'][who]:	
+		mb.data['logs'][who]['messages']=[]
+		
+	mb.data['logs'][who]['messages'].append({'text':message, 'nick': nick})
+	mb.save('logs')
+	
+	
+mb.add_command(send_message,send_message_func)
+mb.add_command(seen,seen_func)		
 mb.add_command(hi,hi_func,call=False)	
 mb.add_command(thank,thank_func,call=False)	
-mb.add_command(mbhi,hi_func)	
+mb.add_command(mbhi,hi_func)
+mb.add_command(coin,coin_func)	
 mb.add_command(mbthank,thank_func)	
 
 	
@@ -142,6 +176,7 @@ mb.add_command(save,save_func, level=1)
 mb.add_command(help,help_func)
 mb.add_command(time,time_func)
 mb.add_command(eightball,eightball_func,priority=999)
+mb.help['choice'] = "mb choose <thing>, <another thing>"
 mb.help['8ball']="anything that starts with mb and doesn't fit any other command is treated like an 8ball command"
 mb.help['memos']="mb yiff <someone>, mb save <something> as <name> - saves some text under <name>, mb get <name> - retrieves it"
 print("loaded misc")
