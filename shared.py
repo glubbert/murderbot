@@ -1,6 +1,6 @@
 from datetime import datetime
 def time_dict(a):
-	s=(a-datetime(1970,1,1)).total_seconds()
+	s=(a-datetime(2016,1,1)).total_seconds()
 	hours = s // 3600
 	minutes = s%3600 // 60
 	seconds = s%60
