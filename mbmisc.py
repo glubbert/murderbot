@@ -196,7 +196,11 @@ mb.add_command(save,save_func, level=1)
 mb.add_command(help,help_func)
 mb.add_command(time,time_func)
 mb.add_command(eightball,eightball_func,priority=999)
-mb.help['choice'] = "mb choose <thing>, <another thing>"
+mb.help['choice'] = "mb choose <list of things separated by , 'or' or 'and'>"
+mb.help['seen'] = "mb seen <who>"
+mb.help['tell'] = "mb tell <who> <what>"
+
+
 mb.help['8ball']="anything that starts with mb and doesn't fit any other command is treated like an 8ball command"
 mb.help['memos']="mb yiff <someone>, mb save <something> as <name> - saves some text under <name>, mb get <name> - retrieves it"
 print("loaded misc")

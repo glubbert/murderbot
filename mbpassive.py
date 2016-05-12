@@ -37,7 +37,6 @@ def  last_message_func(nick,match,target):
 	when=shared.time_dict(date)
 	
 	message = match.group(0)
-	print(nick+" said "+message)
 	if not nick in mb.data['logs']:
 		mb.data['logs'][nick]={}
 	mb.data['logs'][nick]['message'] = message

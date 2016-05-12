@@ -140,7 +140,6 @@ class mb(irc.client.SimpleIRCClient):
 					mb.notices.append(notice)
 					mb.connection.send_raw("NICKSERV STATUS {}".format(nick))
 					print("sending notice: NICKSERV STATUS {}".format(nick))
-				print(entry['passive'])
 				if not entry['passive']:
 					return
 
@@ -201,7 +200,6 @@ class mb(irc.client.SimpleIRCClient):
 	
 
 	def on_privnotice(self,connection,event):
-		print("private notice: "+event.arguments[0])
 		notice=mb.notices[-1:]
 		if notice:
 			notice=notice[0]
