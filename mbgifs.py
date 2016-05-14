@@ -1,28 +1,54 @@
 from mbclient import mb
-import json,urllib,re
-from random import choice
+import json,urllib,re,traceback
+from random import choice,shuffle
 show_me="^show\s+me\s+(?P<query>.*?)(?:\s+#(?P<index>\d+))?$"
-lewd = "^lewd\s+(?P<what>[^#]+)(?:#(?P<page>[\d]+))?"
+lewd = "^lewd\s+(?P<what>.+)"
+
+
+
+	
 
 
 def lewd_func(nick,match,target):
 	what = match.group('what')
-	query = urllib.parse.urlencode({'s':what})
-	page = match.group('page')
-	if not page:
-		page="1"
+	query = urllib.parse.urlencode({'tag':what})
 	
-	try:
-		req = urllib.request.Request("http://gif-porn.net/page/"+page+"/?"+query)
-		response = urllib.request.urlopen(req).read().decode('utf-8')
-	except:
-		mb.tell("whoa there hol up something aint right",target)
-		return
-	pattern = re.compile("<div\s+class=\"entry-content\">.*?(?P<gif>http\S+\.gif).*?</div>", flags=re.DOTALL)
+	tumbles = ['deliciousnights','thoughtsandthoughtsoflove','sweet-loving-sex','schnoez','sexornothing','c-opulation',]
+	shuffle(tumbles)
+	posts = []
+	
+
+	result = None
 	
 	
-	gifs = pattern.findall(response)
-	mb.tell(nick+": "+choice(gifs),target)
+	for tumble in tumbles:
+		try:
+			req = urllib.request.Request("https://api.tumblr.com/v2/blog/"+tumble+".tumblr.com/posts/photo?api_key=fuiKNFp9vQFvjLNvx4sUwti4Yb5yGutBN4Xh10LXZhhRKjWlV4&"+query)
+			response = json.loads(urllib.request.urlopen(req).read().decode('utf-8'))
+		except:
+			mb.tell("whoa there hol up something aint right",target)
+			traceback.print_exc()
+			return
+		posts = response['response']['posts']
+		shuffle(posts)
+		
+		if posts == []:
+			continue
+		else:
+			for post in posts:
+				photo = choice(post['photos'])['original_size']['url']
+				if re.search(".gif$",photo):
+					mb.tell(nick+": "+photo,target)
+					return
+		
+	mb.tell(nick+": none of that here, what is wrong with you",target)	
+		
+		
+	
+	
+	
+	
+	
 	
 	
 	
