@@ -48,7 +48,7 @@ def lewd_func(nick,match,target):
 	what = match.group('what')
 	query = urllib.parse.urlencode({'tag':what})
 	
-	tumbles = ['deliciousnights','porn-gifs','petitecoquiine','schnoez','sexornothing','c-opulation',]
+	tumbles = mb.data['stuff']['porn-blogs']
 	shuffle(tumbles)
 	posts = []
 	
