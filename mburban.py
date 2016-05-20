@@ -26,8 +26,8 @@ def urban_func(nick,match,target):
 				result = choice(response['list'])
 			else:
 				result = response['list'][0]
-			mb.tell(" ".join(result['definition'].splitlines()),target)
-			mb.tell("example: "+" ".join(result['example'].splitlines()),target)
+			mb.tell(" ".join(result['definition'].splitlines())[:200],target)
+			mb.tell("example: "+" ".join(result['example'].splitlines())[:200],target)
 		
 		
 	except:
