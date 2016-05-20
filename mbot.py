@@ -82,6 +82,16 @@ try:
 except:
 	print("failed to import passive functions :(")
 	traceback.print_exc()	
+try:
+	import mbwiki
+except:
+	print("failed to import wiki :(")
+	traceback.print_exc()	
+try:
+	import mburban
+except:
+	print("failed to import urban :(")
+	traceback.print_exc()	
 	
 if __name__=="__main__":
 	#logging.basicConfig(filename="murder.log", level=logging.DEBUG)

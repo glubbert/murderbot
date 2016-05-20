@@ -4,8 +4,8 @@ import urllib.parse
 import traceback
 import re
 import json
-nsfw="(?:n?sfw\s*(?P<url>.+)?)|((?:is|was)\s+(?:that\s+(?:link|picture|image|pic)|it|that)\s+(?:safe|sfw|nsfw))"
-tags="tags?\s+(?P<url>.+)"
+nsfw="^(?:n?sfw\s*(?P<url>.+\.(?:jpeg|jpg|png).*)?)|((?:is|was)\s+(?:that\s+(?:link|picture|image|pic)|it|that)\s+(?:safe|sfw|nsfw))\s*$"
+tags="^(?:tags*\s+(?P<url>.+\.(?:jpeg|jpg|png).*)?)|(tags*(?:\s+on)?(?:\s+(?:that|this|it))?\s*(?:pic|picture|link|image)?)\s*$"
 emotion="emotions?\s+(?P<url>.+)"
 def auth():
 	client_id = mb.data["passwords"]["clarifai"]["client_id"]
@@ -54,7 +54,14 @@ def nsfw_func(nick,match,target):
 
 
 def tags_func(nick,match,target):
-	url=urllib.parse.urlencode({"url":match.group("url")})
+	link=match.group("url")
+	if not link:
+		link = mb.data["stuff"]["last_picture"]
+		
+	
+	
+	url = urllib.parse.urlencode({"url":link})
+		
 	access_token = auth()
 	if access_token=="":
 		mb.tell(nick+": nope. fucking OAuth",target)

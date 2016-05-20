@@ -170,7 +170,7 @@ def measure_func(nick,match,target):
 	mb.tell(nick+": "+response,target)
 	return
 
-mb.add_command(define,define_func, priority=2)
+mb.add_command(define,define_func, priority=8)
 mb.add_command(antonym,antonym_func)
 mb.add_command(synonym,synonym_func)
 mb.add_command(measure,measure_func)
