@@ -83,9 +83,15 @@ def interview_func(nick,match,target):
 			mb.tell("Game started, waiting for another player to join.",target)
 		else:	
 			if "detective" in mb.data['interview']:
-				mb.data['interview']['suspect']=mb.data['interview']['players'][1]
+				if mb.data['interview']['detective'] == mb.data['interview']['players'][0]:
+					mb.data['interview']['suspect']=mb.data['interview']['players'][1]
+				else:
+					mb.data['interview']['suspect']=mb.data['interview']['players'][0]
 			elif "suspect" in mb.data['interview']:
-				mb.data['interview']['detective']=mb.data['interview']['players'][1]
+				if mb.data['interview']['suspect'] == mb.data['interview']['players'][0]:
+					mb.data['interview']['detective']=mb.data['interview']['players'][1]
+				else:
+					mb.data['interview']['detective']=mb.data['interview']['players'][0]
 		
 			else:
 				shuffle(mb.data['interview']['players'])

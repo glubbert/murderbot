@@ -186,6 +186,7 @@ class mb(irc.client.SimpleIRCClient):
 		mb.load('interview_questions')
 		mb.load('yiff')
 		mb.load('logs')
+		#mb.nickname = mb.data['stuff']['nickname']
 		mb.sort_commands()
 		self.try_connecting()
 		
