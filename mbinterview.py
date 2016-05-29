@@ -217,7 +217,6 @@ def reset_func(nick,match,target):
 	
 
 mb.help["interview"]="'mb interview' to start\join the game, once you're playing: 'shoot' or 'bam' or 'bang' to shoot the opponent, 'dismiss' or 'you can go' to dismiss, 'next' or 'next question' to get another question"
-
 mb.add_command(interview_champion,interview_champion_func,level=1)
 mb.add_command(reset,reset_func,level=1)
 mb.add_command(interview_init,interview_init_func)

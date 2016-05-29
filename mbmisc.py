@@ -1,8 +1,9 @@
 from mbclient import mb
+import shared
 from random import choice
 from datetime import datetime
 import re
-import shared
+
 
 #for later maybe, need to redo how private notices are received for this
 #who_will="who(?:\s+and\s+(?P<second>who))?(?P<plural>\s+are|\s+were|'re)?(?P<dowhat>.+)"
@@ -183,16 +184,11 @@ mb.add_command(thank,thank_func,call=False)
 mb.add_command(mbhi,hi_func)
 mb.add_command(coin,coin_func)	
 mb.add_command(mbthank,thank_func)	
-
-	
-	
-	
 mb.add_command(daddy,daddy_func,priority=0)	
 mb.add_command(parent,parent_func)	
 mb.add_command(yiff,yiff_func)	
 mb.add_command(get,get_func)
 mb.add_command(save,save_func, level=1)
-
 mb.add_command(help,help_func)
 mb.add_command(time,time_func)
 mb.add_command(eightball,eightball_func,priority=999)

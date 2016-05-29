@@ -1,5 +1,5 @@
 # coding: utf-8
-from mbot import mb
+from mbclient import mb
 from random import choice
 from nltk.corpus import wordnet as wn
 from nltk.corpus import sentiwordnet as swn

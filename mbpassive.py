@@ -1,6 +1,7 @@
 from mbclient import mb
-from datetime import datetime
 import shared
+from datetime import datetime
+
 
 picture="(.*\s+)*(?P<link>\S+\.(?:png|jpg|jpeg|gif)\S*)(\s+.*)*"
 anything=".*"
@@ -46,6 +47,5 @@ def  last_message_func(nick,match,target):
 	
 print("loaded passive functions")
 mb.add_command(picture,picture_func,call=False, passive= True,priority=5)	
-
 mb.add_command(anything,last_message_func,call=False, passive=True,priority=5)	
 mb.add_command(anything,deliver_message_func,call=False,passive=True,priority=5)

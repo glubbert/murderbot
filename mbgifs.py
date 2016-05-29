@@ -118,7 +118,6 @@ mb.add_command(show_me,show_me_func,priority=3)
 mb.add_command(lewd,lewd_func)
 mb.add_command(tumblr,tumblr_func)
 mb.help["gifs"]="mb show me <whatever> (searches for <whatever> on giphy), mb lewd <whatever> (searches for gifs in \\tagged of several porn tumblrs)"
-
 mb.help["tumblr"]="mb tumblr [text|photo](optional) <something>"
 
 print("loaded gifs")

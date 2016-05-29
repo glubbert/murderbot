@@ -1,5 +1,6 @@
 # coding: utf-8
 from mbclient import mb
+
 from random import choice
 import re,json,urllib.parse,urllib.request,traceback
 wiki="wiki\s+(?P<r>random\s+)?(?P<what>.+)"

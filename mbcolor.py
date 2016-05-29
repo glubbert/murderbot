@@ -1,8 +1,8 @@
+from mbclient import mb
 import urllib.request
 import urllib.parse
 from random import choice
 import json
-from mbclient import mb
 
 what_color="#(?P<hex>[\d,a-f]{6})\s*"
 keyword_color="(?:what(?:'s|s|\s+is|\s+are)\s+)?(?:a\s+|the\s+)?colou?rs?\s+(?:for|of)\s+(?P<kw>[\w\s]+)"
@@ -40,7 +40,9 @@ def what_color_func(nick,match,target):
 	mb.tell(nick+": "+title+" ",target)
 	mb.tell(link,target,True)
 	return
+
 mb.add_command(what_color,what_color_func)
 mb.add_command(keyword_color,keyword_color_func)
+
 mb.help["colors"]="mb <hex color, e.g. #ff00ff>, mb what's the color of <something>"
 print("loaded colors")

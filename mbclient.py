@@ -1,5 +1,14 @@
-import irc.client,sys,traceback,os,re,json
+import sys,traceback,os,re,json
 
+try:
+	import hexchat
+except:
+	print("not hexchat it seems")
+	
+try:
+	import irc.client
+except:
+	print("no irc module")
 
 class mb(irc.client.SimpleIRCClient):
 	server = "irc.uworld.se"
@@ -27,6 +36,7 @@ class mb(irc.client.SimpleIRCClient):
 	notices=[]
 	connection=None
 	data={}
+	hexchat=False
 	caps=False
 	format={
 	"BOLD":chr(0x02),"ITALIC":chr(0x1D),"UNDERLINE":chr(0x1F)}
@@ -56,7 +66,7 @@ class mb(irc.client.SimpleIRCClient):
 		mb.save(what)
 	@staticmethod
 
-	def tell(what,target,boring=False, action=False):
+	def tell(what,target="",boring=False, action=False):
 		if boring:
 			quirk=""
 		else:
@@ -68,11 +78,19 @@ class mb(irc.client.SimpleIRCClient):
 		
 		what=quirk+what
 		
-		if action:
+		if not mb.hexchat and action:
 			what = "\u0001ACTION "+what+"\u0001"
+	
 		
-		
-		mb.connection.send_raw("PRIVMSG "+target+" :"+what)
+		if mb.hexchat:
+			if target=="":
+				hexchat.command("timer 0.35 say "+what)
+			else:
+				print("pming "+target+"...")
+				hexchat.command("timer 0.35 msg "+target+" "+what)
+		else:
+			mb.connection.send_raw("PRIVMSG "+target+" :"+what)
+			
 	@staticmethod
 	def sort_commands():
 		mb.commands=sorted(mb.commands, key=lambda k: k['priority'])
@@ -138,7 +156,11 @@ class mb(irc.client.SimpleIRCClient):
 				else:
 					notice={'func':func,'params':params,'level':entry['level'],'target':target,}
 					mb.notices.append(notice)
-					mb.connection.send_raw("NICKSERV STATUS {}".format(nick))
+					if mb.hexchat:
+						hexchat.command("NICKSERV STATUS {}".format(nick))
+					else:
+						mb.connection.send_raw("NICKSERV STATUS {}".format(nick))
+					
 					print("sending notice: NICKSERV STATUS {}".format(nick))
 				if not entry['passive']:
 					return
@@ -170,9 +192,15 @@ class mb(irc.client.SimpleIRCClient):
 			print("ERROR: Couldn't save a thing")		
 			traceback.print_exc()
 
-	def __init__(self):
-		irc.client.SimpleIRCClient.__init__(self)
-		mb.path=os.path.dirname(os.path.realpath('__file__'))
+	def __init__(self,hexchat=False):
+		mb.hexchat=hexchat
+		print("init........")
+		homedir = os.path.dirname(os.path.realpath('__file__'))
+		paths = ["D:/murderbot","~/murderbot",homedir]
+		for path in paths:
+			if os.path.isfile(os.path.join(path,"mbclient.py")):
+				mb.path = path
+				break
 		mb.load('uncles')
 		mb.load('options')
 		mb.load('stuff')
@@ -186,9 +214,10 @@ class mb(irc.client.SimpleIRCClient):
 		mb.load('interview_questions')
 		mb.load('yiff')
 		mb.load('logs')
-		#mb.nickname = mb.data['stuff']['nickname']
 		mb.sort_commands()
-		self.try_connecting()
+		if not hexchat:
+			irc.client.SimpleIRCClient.__init__(self)
+			self.try_connecting()
 		
 	def on_welcome(self, connection, event):
 		print("on_welcome: "+event.arguments[0])
@@ -198,14 +227,13 @@ class mb(irc.client.SimpleIRCClient):
 			connection.join(channel)
 
 
-	
-
-	def on_privnotice(self,connection,event):
+	@staticmethod
+	def handle_auth(message):
 		notice=mb.notices[-1:]
 		if notice:
 			notice=notice[0]
 			pattern=re.compile("STATUS\s+(?P<nick>\S+)\s+(?P<status>\d)",flags=re.IGNORECASE)
-			match=re.match(pattern,event.arguments[0]).groupdict()
+			match=re.match(pattern,message).groupdict()
 			if match['nick']==mb.admin:
 				if int(match['status'])==3:
 					mb.execute_command(notice['func'],**notice['params'])
@@ -229,6 +257,10 @@ class mb(irc.client.SimpleIRCClient):
 			else:
 				print('dissing the chump')
 				mb.tell(match['nick']+": who the fuck are you again",notice['target'])
+	
+
+	def on_privnotice(self,connection,event):
+		mb.handle_auth(event.arguments[0])
 
 	
 	def on_pubnotice(self,connection,event):
