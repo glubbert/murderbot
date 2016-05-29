@@ -6,7 +6,7 @@ import hexchat,re,os,traceback,sys
 from importlib.machinery import SourceFileLoader
 homedir = os.path.dirname(os.path.realpath('__file__'))
 path="no path :("
-paths = ["D:/murderbot","~/murderbot",homedir]
+paths = ["D:/murderbot","~/murderbot/murderbot",homedir]
 for p in paths:
 	if os.path.isfile(os.path.join(p,"mbclient.py")):
 		path = p
