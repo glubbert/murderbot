@@ -42,7 +42,7 @@ modnames=[
 	"mbquotes",
 	"mbmisc",
 	"mbcalc",
-	"mbupdates",
+	#"mbupdates",
 	"mbgifs",
 	"mbinterview",
 	"mbrecognition",
@@ -59,7 +59,14 @@ for module in modnames:
 	
 cstrip=re.compile("\x1f|\x02|\x12|\x0f|\x16|\x1d|\x03(?:\d{1,3}(?:,\d{1,3})?)?", re.UNICODE)
 	
-def hook(word,word_eol,userdata):	
+def pmhook(word,word_eol,userdata):	
+		nick=re.sub(cstrip,"",word[0])
+		message=re.sub(cstrip,"",word[1])
+		mb.execute(message,nick,nick)
+		return None	
+	
+	
+def cmhook(word,word_eol,userdata):	
 		nick=re.sub(cstrip,"",word[0])
 		message=re.sub(cstrip,"",word[1])
 		mb.execute(message,nick,"")
@@ -79,10 +86,10 @@ mbot = mb(True)
 
 print(str(len(mb.commands)))
 hexchat.hook_print('Notice',hook_auth)
-hexchat.hook_print('Private Message to Dialog',hook)
-hexchat.hook_print('Private Message',hook)
-hexchat.hook_print('Channel Message',hook)
-hexchat.hook_print('Channel Msg Hilight',hook)		
+hexchat.hook_print('Private Message to Dialog',pmhook)
+hexchat.hook_print('Private Message',pmhook)
+hexchat.hook_print('Channel Message',cmhook)
+hexchat.hook_print('Channel Msg Hilight',cmhook)		
 	
 	
 
