@@ -2,10 +2,14 @@ __module_name__ = "MURDERBOT"
 __module_version__ = "6.66"
 __module_description__ = "FUCK YOU"
 import hexchat,re,os,traceback,sys
+import imp
 
-from importlib.machinery import SourceFileLoader
 homedir = os.path.dirname(os.path.realpath('__file__'))
 path="no path :("
+
+
+
+
 paths = ["D:/murderbot","~/murderbot/murderbot",homedir]
 for p in paths:
 	if os.path.isfile(os.path.join(p,"mbclient.py")):
@@ -20,9 +24,9 @@ from mbclient import mb
 		
 def load(modname):
 
+	handle, pathname, descrip = imp.find_module(modname, [path])
 	try:
-		module = SourceFileLoader(modname, os.path.join(path,modname+".py")).load_module()
-		return module
+		return imp.load_module(modname, handle, pathname, descrip)
 	except:
 		print("failed to import "+modname+" :(")
 		traceback.print_exc()
