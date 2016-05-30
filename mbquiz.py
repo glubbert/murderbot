@@ -1,6 +1,6 @@
 from mbclient import mb
 from random import choice
-import json,urllib,re
+import json,urllib,urllib2,re
 from xml.sax.saxutils import unescape
 quiz="quiz[\s!?]*$"
 quiz_champ="quiz\s+champion[!?\s]*$"
@@ -103,8 +103,8 @@ def quiz_func(nick,match,target):
 	if 'quiz' in mb.responses:
 		mb.tell("weak! the answer was "+mb.responses['quiz']['param']['answer'],target)
 		del mb.responses['quiz']
-	req=urllib.request.Request('http://jservice.io/api/random')
-	response=urllib.request.urlopen(req).read().decode('utf-8')
+	req=urllib2.Request('http://jservice.io/api/random')
+	response=urllib2.urlopen(req).read().decode('utf-8')
 	data=choice(json.loads(response))
 	answer=re.sub(html_tags,"",data['answer'])
 	answer=answer.replace(r"\'","'")	

@@ -1,6 +1,6 @@
 from mbclient import mb
-import urllib.request
-import urllib.parse
+import urllib
+import urllib2
 from random import choice
 import json
 
@@ -9,11 +9,11 @@ keyword_color="(?:what(?:'s|s|\s+is|\s+are)\s+)?(?:a\s+|the\s+)?colou?rs?\s+(?:f
 
 def keyword_color_func(nick,match,target):
 		keywords=match.group('kw')
-		parameters=urllib.parse.urlencode({'keywords':keywords})
-		req=urllib.request.Request("http://www.colourlovers.com/api/colors?"+parameters+"&format=json&numResults=20")
+		parameters=urllib.urlencode({'keywords':keywords})
+		req=urllib2.Request("http://www.colourlovers.com/api/colors?"+parameters+"&format=json&numResults=20")
 		req.add_header('User-Agent', "ColourLovers Browser")
 		try:
-			response=urllib.request.urlopen(req)
+			response=urllib2.urlopen(req)
 			cdict=choice(json.loads(response.read().decode('utf-8')))
 		except IndexError:
 			mb.tell(nick+": no idea",target)
@@ -27,10 +27,10 @@ def keyword_color_func(nick,match,target):
 
 def what_color_func(nick,match,target):
 	color=match.group('hex')
-	req=urllib.request.Request("http://www.colourlovers.com/api/color/"+color+"?format=json")
+	req=urllib2.Request("http://www.colourlovers.com/api/color/"+color+"?format=json")
 	req.add_header('User-Agent', "ColourLovers Browser")
 	try:
-		response=urllib.request.urlopen(req)
+		response=urllib2.urlopen(req)
 		cdict=json.loads(response.read().decode('utf-8'))[0]
 	except IndexError:
 		mb.tell(nick+": did you pull that out of your ass?? shove it back")

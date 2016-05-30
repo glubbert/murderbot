@@ -2,16 +2,16 @@
 from mbclient import mb
 
 from random import choice
-import re,json,urllib.parse,urllib.request,traceback
+import re,json,urllib,urllib2,traceback
 wiki="wiki\s+(?P<r>random\s+)?(?P<what>.+)"
 html_tags = re.compile(r'<[^>]+>')
 
 def wiki_func(nick,match,target):
-	what = urllib.parse.urlencode({"srsearch":match.group("what")})
+	what = urllib.urlencode({"srsearch":match.group("what")})
 	r=match.group('r')
-	req = urllib.request.Request('https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=&explaintext&list=search&'+what)
+	req = urllib2.Request('https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=&explaintext&list=search&'+what)
 	try:
-		response = json.loads(urllib.request.urlopen(req).read().decode('utf-8'))['query']
+		response = json.loads(urllib2.urlopen(req).read().decode('utf-8'))['query']
 		if response['searchinfo']['totalhits']==0:
 			mb.tell(nick+": none of that", target)
 			return

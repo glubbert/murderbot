@@ -1,5 +1,5 @@
 from mbclient import mb
-import json,urllib,re,traceback
+import json,urllib,urllib2,re,traceback
 from random import choice,shuffle
 show_me="^show\s+me\s+(?P<query>.*?)(?:\s+#(?P<index>\d+))?$"
 lewd = "^lewd\s+(?P<what>.+)"
@@ -16,10 +16,10 @@ def tumblr_func(nick,match,target):
 		types=["text","photo"]
 	
 	what = match.group('what')
-	query = urllib.parse.urlencode({'tag':what})
+	query = urllib.urlencode({'tag':what})
 	try:
-		req = urllib.request.Request("https://api.tumblr.com/v2/tagged?api_key=oBkePh2f80LWzw0jfO3DEYz2YLfRRCmmz8VM9rsv5cxwa4kGAZ&"+query)
-		response = json.loads(urllib.request.urlopen(req).read().decode('utf-8'))
+		req = urllib2.Request("https://api.tumblr.com/v2/tagged?api_key=oBkePh2f80LWzw0jfO3DEYz2YLfRRCmmz8VM9rsv5cxwa4kGAZ&"+query)
+		response = json.loads(urllib2.urlopen(req).read().decode('utf-8'))
 	except:
 		mb.tell("whoa there hol up something aint right",target)
 		traceback.print_exc()
@@ -46,7 +46,7 @@ def tumblr_func(nick,match,target):
 
 def lewd_func(nick,match,target):
 	what = match.group('what')
-	query = urllib.parse.urlencode({'tag':what})
+	query = urllib.urlencode({'tag':what})
 	
 	tumbles = mb.data['stuff']['porn-blogs']
 	shuffle(tumbles)
@@ -58,8 +58,8 @@ def lewd_func(nick,match,target):
 	
 	for tumble in tumbles:
 		try:
-			req = urllib.request.Request("https://api.tumblr.com/v2/blog/"+tumble+".tumblr.com/posts/photo?api_key=oBkePh2f80LWzw0jfO3DEYz2YLfRRCmmz8VM9rsv5cxwa4kGAZ&"+query)
-			response = json.loads(urllib.request.urlopen(req).read().decode('utf-8'))
+			req = urllib2.Request("https://api.tumblr.com/v2/blog/"+tumble+".tumblr.com/posts/photo?api_key=oBkePh2f80LWzw0jfO3DEYz2YLfRRCmmz8VM9rsv5cxwa4kGAZ&"+query)
+			response = json.loads(urllib2.urlopen(req).read().decode('utf-8'))
 		except:
 			mb.tell("whoa there hol up something aint right",target)
 			traceback.print_exc()
@@ -93,10 +93,10 @@ def show_me_func(nick,match,target):
 	index = match.group('index')
 	headers={'X-Mashape-Key': '6SRh5ZIyhhmshOjLLIEVlfRzZR3Mp1KJgLsjsny2Vq36opmhI6',
 			'Accept':'application/json'}
-	query=urllib.parse.urlencode({"q":match.group('query')})
+	query=urllib.urlencode({"q":match.group('query')})
 
-	req=urllib.request.Request('https://giphy.p.mashape.com/v1/gifs/search?api_key=dc6zaTOxFJmzC&'+query,headers=headers)
-	response=urllib.request.urlopen(req).read()
+	req=urllib2.Request('https://giphy.p.mashape.com/v1/gifs/search?api_key=dc6zaTOxFJmzC&'+query,headers=headers)
+	response=urllib2.urlopen(req).read()
 	results=json.loads(response.decode("utf-8"))["data"]
 	
 	if results==[]:

@@ -51,7 +51,7 @@ def auth(target):
 	client_id=mb.data['passwords']['translate']['client_id']
 	client_secret=mb.data['passwords']['translate']['client_secret']
 
-	data = urllib.parse.urlencode({
+	data = urllib.urlencode({
 		'client_id' : client_id,
 		'client_secret' :client_secret,
 		'grant_type' : 'client_credentials',
@@ -59,10 +59,10 @@ def auth(target):
 		})
 	uri="https://datamarket.accesscontrol.windows.net/v2/OAuth2-13"
 	try:
-		response=urllib.request.urlopen(uri,data.encode('utf-8'))
-	except urllib.request.HTTPError as e:
+		response=urllib2.urlopen(uri,data.encode('utf-8'))
+	except urllib2.HTTPError as e:
 		mb.tell("ERROЯ",target)
-		print.e.read()
+		print(e.read())
 		return None
 	rdata=json.loads(response.read().decode('utf-8'))
 	if 'access_token' in rdata:
@@ -110,13 +110,13 @@ def translate_func(nick,match,target):
 	data['text']=match.group('text')
 	
 	
-	url='http://api.microsofttranslator.com/v2/Http.svc/Translate?'+urllib.parse.urlencode(data)
+	url='http://api.microsofttranslator.com/v2/Http.svc/Translate?'+urllib.urlencode(data)
 	print("Translation url request: "+url)
-	req=urllib.request.Request(url)
+	req=urllib2.Request(url)
 	req.add_header('Authorization','Bearer '+token)
 	try:
-		response=urllib.request.urlopen(req)
-	except urllib.request.HTTPError as e:
+		response=urllib2.urlopen(req)
+	except urllib2.HTTPError as e:
 		mb.tell("Erroя.",target)
 		print(e.read())
 		return None

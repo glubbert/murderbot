@@ -1,6 +1,6 @@
 from mbclient import mb
-import urllib.request
-import urllib.parse
+import urllib
+import urllib2
 import traceback
 import re
 import json
@@ -11,11 +11,11 @@ def auth():
 	client_id = mb.data["passwords"]["clarifai"]["client_id"]
 	client_secret = mb.data["passwords"]["clarifai"]["client_secret"]
 	
-	data = urllib.parse.urlencode({"client_id": client_id, "client_secret": client_secret, "grant_type":"client_credentials"}).encode("utf-8")
+	data = urllib.urlencode({"client_id": client_id, "client_secret": client_secret, "grant_type":"client_credentials"}).encode("utf-8")
 	
-	req = urllib.request.Request("https://api.clarifai.com/v1/token",data = data)
+	req = urllib2.Request("https://api.clarifai.com/v1/token",data = data)
 	try:
-		response = json.loads(urllib.request.urlopen(req).read().decode("utf-8"))
+		response = json.loads(urllib2.urlopen(req).read().decode("utf-8"))
 	except:
 		traceback.print_exc()
 		return ""
@@ -28,7 +28,7 @@ def nsfw_func(nick,match,target):
 	if not link:
 		link = mb.data["stuff"]["last_picture"]
 
-	url=urllib.parse.urlencode({"url":link})
+	url=urllib.urlencode({"url":link})
 	
 	
 	
@@ -39,10 +39,10 @@ def nsfw_func(nick,match,target):
 	
 	
 	
-	req = urllib.request.Request("https://api.clarifai.com/v1/tag?model=nsfw-v1.0&{}".format(url));
+	req = urllib2.Request("https://api.clarifai.com/v1/tag?model=nsfw-v1.0&{}".format(url));
 	req.add_header("Authorization","Bearer "+access_token);
 	try:
-		response = json.loads(urllib.request.urlopen(req).read().decode("utf-8"));
+		response = json.loads(urllib2.urlopen(req).read().decode("utf-8"));
 	except:
 		mb.tell(nick+": something aint right",target)
 		traceback.print_exc()
@@ -60,16 +60,16 @@ def tags_func(nick,match,target):
 		
 	
 	
-	url = urllib.parse.urlencode({"url":link})
+	url = urllib.urlencode({"url":link})
 		
 	access_token = auth()
 	if access_token=="":
 		mb.tell(nick+": nope. fucking OAuth",target)
 		return
-	req = urllib.request.Request("https://api.clarifai.com/v1/tag?{}".format(url));
+	req = urllib2.Request("https://api.clarifai.com/v1/tag?{}".format(url));
 	req.add_header("Authorization","Bearer "+access_token);
 	try:
-		response = json.loads(urllib.request.urlopen(req).read().decode("utf-8"));
+		response = json.loads(urllib2.urlopen(req).read().decode("utf-8"));
 	except:
 		mb.tell(nick+": something aint right",target)
 		traceback.print_exc()
@@ -83,11 +83,11 @@ def tags_func(nick,match,target):
 
 def emotion_func(nick,match,target):
 	url=json.dumps({"url":match.group("url")}).encode("utf-8")
-	req = urllib.request.Request("https://api.projectoxford.ai/emotion/v1.0/recognize",data=url);
+	req = urllib2.Request("https://api.projectoxford.ai/emotion/v1.0/recognize",data=url);
 	req.add_header("Ocp-Apim-Subscription-Key","f40e7a9a0e944f22b1bf91175c0d7e9d");
 	req.add_header('Content-Type', 'application/json')
 	try:
-		response = json.loads(urllib.request.urlopen(req).read().decode("utf-8"));
+		response = json.loads(urllib2.urlopen(req).read().decode("utf-8"));
 	except:
 		mb.tell(nick+": something aint right",target)
 		traceback.print_exc()
