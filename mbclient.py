@@ -196,7 +196,7 @@ class mb(irc.client.SimpleIRCClient):
 		mb.hexchat=hexchat
 		print("init........")
 		homedir = os.path.dirname(os.path.realpath('__file__'))
-		paths = ["D:/murderbot","~/murderbot",homedir]
+		paths = ["D:/murderbot","/home/batlord/murderbot/murderbot",homedir]
 		for path in paths:
 			if os.path.isfile(os.path.join(path,"mbclient.py")):
 				mb.path = path
