@@ -60,7 +60,7 @@ for module in modnames:
 cstrip=re.compile("\x1f|\x02|\x12|\x0f|\x16|\x1d|\x03(?:\d{1,3}(?:,\d{1,3})?)?", re.UNICODE)
 	
 def hook(word,word_eol,userdata):	
-		nick=re.sub(cstrip,"",word[0]).upper()
+		nick=re.sub(cstrip,"",word[0])
 		message=re.sub(cstrip,"",word[1])
 		mb.execute(message,nick,"")
 		return None	
@@ -68,7 +68,7 @@ def hook(word,word_eol,userdata):
 def hook_auth(word,word_eol,userdata):	
 		nick=re.sub(cstrip,"",word[0])
 		message=re.sub(cstrip,"",word[1])
-		if nick=="NICKSERV":
+		if nick.upper()=="NICKSERV":
 			mb.handle_auth(message)
 		return None	
 
