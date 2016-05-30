@@ -10,7 +10,7 @@ path="no path :("
 
 
 
-paths = ["D:/murderbot",os.path.join(os.path.join("~","murderbot"),"murderbot"),homedir]
+paths = ["D:/murderbot","/home/batlord/murderbot/murderbot",homedir]
 for p in paths:
 	if os.path.isfile(os.path.join(p,"mbclient.py")):
 		path = p
