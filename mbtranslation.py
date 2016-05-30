@@ -1,6 +1,6 @@
 # coding: utf-8
 from mbclient import mb
-import urllib,os
+import urllib,urllib2,os
 import json
 import re
 languages="(?:what\s+)?languages(?:\s+do|\s+can)?(?:\s+you)?(?:\s+know|\s+speak)?"
