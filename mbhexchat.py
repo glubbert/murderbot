@@ -66,7 +66,7 @@ def hook(word,word_eol,userdata):
 		return None	
 		
 def hook_auth(word,word_eol,userdata):	
-		nick=re.sub(cstrip,"",word[0]).upper()
+		nick=re.sub(cstrip,"",word[0])
 		message=re.sub(cstrip,"",word[1])
 		if nick=="NICKSERV":
 			mb.handle_auth(message)
