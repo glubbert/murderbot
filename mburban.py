@@ -1,19 +1,19 @@
 # coding: utf-8
 from mbclient import mb
 from random import choice
-import json,urllib.parse,urllib.request,traceback
+import json,urllib,urllib2,traceback
 urban = "urban(?:(?P<r>\s+random)|(?P<s>\s+sound))?\s+(?P<what>.+)"
 
 
 def urban_func(nick,match,target):
-	what = urllib.parse.urlencode({"term":match.group("what")})
+	what = urllib.urlencode({"term":match.group("what")})
 	s=match.group('s')
 	r=match.group('r')
-	req = urllib.request.Request('https://mashape-community-urban-dictionary.p.mashape.com/define?'+what)
+	req = urllib2.Request('https://mashape-community-urban-dictionary.p.mashape.com/define?'+what)
 	req.add_header("X-Mashape-Key","6SRh5ZIyhhmshOjLLIEVlfRzZR3Mp1KJgLsjsny2Vq36opmhI6")
 	req.add_header("Accept", "text/plain")
 	try:
-		response = json.loads(urllib.request.urlopen(req).read().decode('utf-8'))
+		response = json.loads(urllib2.urlopen(req).read().decode('utf-8'))
 		
 		if response['result_type'] == "no_results":
 			mb.tell(nick+": none of that", target)
