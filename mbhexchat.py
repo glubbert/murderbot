@@ -32,7 +32,7 @@ def load(modname):
 		traceback.print_exc()
 	
 modnames=[
-	"mbcolors",
+	"mbcolor",
 	"mbcommands",
 	"mbtranslation",
 	"mbbing",
