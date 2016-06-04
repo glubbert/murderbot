@@ -81,5 +81,7 @@ def weather_func(nick, match,target):
 	return
 
 
+mb.add_command(weather,weather_func)
 
+print("loaded weather")
 mb.help["weather"] = "mb weather [f] [tomorrow|in a week|in a month|in N days] <city>"
