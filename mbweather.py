@@ -21,7 +21,7 @@ def weather_func(nick, match,target):
 	if not when:
 		function = "weather"
 	else:
-		function = "daily"
+		function = "forecast/daily"
 		if when=="tomorrow":
 			days = 0
 		elif week:
