@@ -53,7 +53,7 @@ def weather_func(nick, match,target):
 	if function == "weather":
 		data['lat']=result['coord']['lon']
 		data['lon']=result['coord']['lon']
-		data['description']=result['weather']['0']['description']
+		data['description']=result['weather'][0]['description']
 		data['min']=result['main']['temp_min']
 		data['max']=result['main']['temp_max']
 		data['humidity']=result['main']['humidity']
@@ -66,7 +66,7 @@ def weather_func(nick, match,target):
 	else:
 		data['lat']=result['city']['coord']['lon']
 		data['lon']=result['city']['coord']['lon']
-		data['description']=result['list'][days]['weather']['description']
+		data['description']=result['list'][days]['weather'][0]['description']
 		data['min']=result['list'][days]['temp']['temp_min']
 		data['max']=result['list'][days]['temp']['temp_max']
 		data['humidity']=result['list'][days]['humidity']
