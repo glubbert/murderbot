@@ -31,7 +31,7 @@ def weather_func(nick, match,target):
 		else:
 			days = int(days)
 		if days>16:
-			mb.tell(nick+": what am I nostradamus?? 6 days max",target)
+			mb.tell(nick+": what am I nostradamus?? 16 days max",target)
 			return
 		
 		
