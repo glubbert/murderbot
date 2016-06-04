@@ -49,7 +49,7 @@ def weather_func(nick, match,target):
 	data['degrees'] = degrees
 	data['speed'] = speed
  	
-	if func == "weather":
+	if function == "weather":
 		data['lat']=result['coord']['lon']
 		data['lon']=result['coord']['lon']
 		data['description']=result['weather']['0']['description']
