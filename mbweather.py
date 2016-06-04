@@ -31,7 +31,7 @@ def weather_func(nick, match,target):
 		else:
 			days = int(days)
 		if days>16:
-			mb.tell(nick+": what am I nostradamus?? 6 days max")
+			mb.tell(nick+": what am I nostradamus?? 6 days max",target)
 			return
 		
 		
@@ -71,7 +71,7 @@ def weather_func(nick, match,target):
 			data['clouds']=result['list'][days]['clouds']
 			
 			
-		answer = "{lat} lat., {lon} lon.:{description},{clouds}% cloudy, temp: {min}-{max}{degrees}, humidity: {humidity}%, wind:{wind}{speed}".format(**data)
+		answer = "{lat} lat., {lon} lon.:{description}, {clouds}% cloudy, temp: {min}-{max}{degrees}, humidity: {humidity}%, wind:{wind}{speed}".format(**data)
 	except:
 		mb.tell(nick+": Ouch, you broke something",target)
 		traceback.print_exc()
