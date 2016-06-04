@@ -88,7 +88,7 @@ def weather_func(nick, match,target):
 		data['lat'] = lat
 		data['lon'] = lon
 		
-		answer = "{lat} lat., {lon} lon.: {description}, {clouds}% cloudy, temp: {min}-{max}{degrees}, humidity: {humidity}%, wind:{wind}{speed}".format(**data)
+		answer = "{lat} {lon}: {description}, {clouds}% cloudy, temp: {min}-{max}{degrees}, humidity: {humidity}%, wind:{wind}{speed}".format(**data)
 	except:
 		mb.tell(nick+": Ouch, you broke something",target)
 		traceback.print_exc()
