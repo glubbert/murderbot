@@ -22,7 +22,7 @@ def weather_func(nick, match,target):
 		function = "weather"
 	else:
 		function = "daily"
-		if tomorrow:
+		if when=="tomorrow":
 			days = 0
 		elif week:
 			days = 6
@@ -71,7 +71,7 @@ def weather_func(nick, match,target):
 			data['clouds']=result['list'][days]['clouds']
 			
 			
-		answer = "{lat}lat, {lon}lon:{description},{clouds}% cloudy, temp: {min}-{max}{degrees}, humidity: {humidity}%, wind:{wind}{speed}".format(**data)
+		answer = "{lat} lat., {lon} lon.:{description},{clouds}% cloudy, temp: {min}-{max}{degrees}, humidity: {humidity}%, wind:{wind}{speed}".format(**data)
 	except:
 		mb.tell(nick+": Ouch, you broke something",target)
 		return
