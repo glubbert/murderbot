@@ -81,9 +81,9 @@ def weather_func(nick, match,target):
 			lat = str(int(lat))+"N"
 			
 		if lon<0:
-			lon = str(int(-lon))+"E"
+			lon = str(int(-lon))+"W"
 		else:
-			lon = str(int(lon))+"W"	
+			lon = str(int(lon))+"E"	
 			
 		data['lat'] = lat
 		data['lon'] = lon
