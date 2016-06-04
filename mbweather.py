@@ -58,7 +58,6 @@ def weather_func(nick, match,target):
 		data['max']=result['main']['temp_max']
 		data['humidity']=result['main']['humidity']
 		data['wind']=result['wind']['speed']
-		data['direction']=result['wind']['deg']
 		data['clouds']=result['clouds']['all']
 		
 		
@@ -71,11 +70,10 @@ def weather_func(nick, match,target):
 		data['max']=result['list'][days]['temp']['temp_max']
 		data['humidity']=result['list'][days]['humidity']
 		data['wind']=result['list'][days]['speed']
-		data['direction']=result['list'][days]['deg']
 		data['clouds']=result['list'][days]['clouds']
 		
 		
-	answer = "{lat}lat, {lon}lon:{description},{clouds}% cloudy, temp: {min}-{max}{degrees}, humidity: {humidity}%, wind:{wind}{speed}, direction - {direction} degrees".fomat(**data)
+	answer = "{lat}lat, {lon}lon:{description},{clouds}% cloudy, temp: {min}-{max}{degrees}, humidity: {humidity}%, wind:{wind}{speed}".fomat(**data)
 	
 	mb.tell(nick+": "+answer,target)
 	mb.tell(link,target,True)
