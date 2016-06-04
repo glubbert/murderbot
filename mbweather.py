@@ -1,5 +1,5 @@
 from mbclient import mb
-import urllib, urllib2,json
+import urllib, urllib2,json,traceback
 weather = "weather(?:\s+(?P<F>f|fahrenheit))?(?:\s+(?P<when>tomorrow|(?:in\s+(?:(?P<days>\d+)\s+days))|(?P<week>in\s+a\s+week)|(?P<two_weeks>in\s+two\s+weeks)))?.*\s+(?P<city>.+)"
 
 
@@ -74,6 +74,7 @@ def weather_func(nick, match,target):
 		answer = "{lat} lat., {lon} lon.:{description},{clouds}% cloudy, temp: {min}-{max}{degrees}, humidity: {humidity}%, wind:{wind}{speed}".format(**data)
 	except:
 		mb.tell(nick+": Ouch, you broke something",target)
+		traceback.print_exc()
 		return
 	mb.tell(nick+": "+answer,target)
 	return
