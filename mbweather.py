@@ -36,7 +36,8 @@ def weather_func(nick, match,target):
 		
 		
 		
-	city=urllib.urlencode({"q":match.group('city')})
+	city=urllib.urlencode({"q":match.group('city').encode('utf-8')})
+	print(city)
 	req=urllib2.Request("http://api.openweathermap.org/data/2.5/{}?{}&appid=dea3debc697fe27920ae5166c6e6594e&units={}&cnt=16".format(function,city,units))
 	
 	try:
@@ -49,7 +50,7 @@ def weather_func(nick, match,target):
 		data['speed'] = speed
 		
 		if function == "weather":
-			data['lat']=result['coord']['lon']
+			data['lat']=result['coord']['lat']
 			data['lon']=result['coord']['lon']
 			data['description']=result['weather'][0]['description']
 			data['min']=result['main']['temp_min']
@@ -61,7 +62,7 @@ def weather_func(nick, match,target):
 			
 			
 		else:
-			data['lat']=result['city']['coord']['lon']
+			data['lat']=result['city']['coord']['lat']
 			data['lon']=result['city']['coord']['lon']
 			data['description']=result['list'][days]['weather'][0]['description']
 			data['min']=result['list'][days]['temp']['min']
@@ -70,8 +71,24 @@ def weather_func(nick, match,target):
 			data['wind']=result['list'][days]['speed']
 			data['clouds']=result['list'][days]['clouds']
 			
+		
+		lat = float(data['lat'])
+		lon = float(data['lon'])
+
+		if lat<0:
+			lat = str(int(-lat))+"S"
+		else:
+			lat = str(int(lat))+"N"
 			
-		answer = "{lat} lat., {lon} lon.:{description}, {clouds}% cloudy, temp: {min}-{max}{degrees}, humidity: {humidity}%, wind:{wind}{speed}".format(**data)
+		if lon<0:
+			lon = str(int(-lon))+"E"
+		else:
+			lon = str(int(lon))+"W"	
+			
+		data['lat'] = lat
+		data['lon'] = lon
+		
+		answer = "{lat} lat., {lon} lon.: {description}, {clouds}% cloudy, temp: {min}-{max}{degrees}, humidity: {humidity}%, wind:{wind}{speed}".format(**data)
 	except:
 		mb.tell(nick+": Ouch, you broke something",target)
 		traceback.print_exc()
