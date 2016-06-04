@@ -23,13 +23,14 @@ def weather_func(nick, match,target):
 	else:
 		function = "daily"
 		if tomorrow:
-			days = "0"
+			days = 0
 		elif week:
-			days = "6"
+			days = 6
 		elif two_weeks:
-			days = "13"
-
-		if int(days)>16:
+			days = 13
+		else:
+			days = int(days)
+		if days>16:
 			mb.tell(nick+": what am I nostradamus?? 6 days max")
 			return
 		
