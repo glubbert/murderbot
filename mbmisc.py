@@ -36,7 +36,7 @@ hello=["bye","shut up","go away","not you again","hi","hello","uh huh","sigh"]
 
 def coin_func(nick,match,target):
 	what = match.group('what')
-	p=re.compile("(?:and|or|\s|\.|,)+")
+	p=re.compile("\s*(?:and|or|\.|,)+\s*")
 	options = p.split(what)
 	
 	mb.tell(nick+ ": "+choice(options),target)

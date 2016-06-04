@@ -101,13 +101,12 @@ def type_in_func(nick,match,target):
 		mb.save('options')
 		mb.tell(nick+": I'll try",target)
 		
-mb.help['typing']="mb type in <options> (only available to selected few, haha losers), mb font options"
 mb.add_command(last_picture,last_picture_func)	
 mb.add_command(console,console_func,level=2)
-mb.add_command(shut_down,shut_down_func,level=2)			
-mb.add_command(list_uncles,list_uncles_func)			
+#mb.add_command(shut_down,shut_down_func,level=2)			
+#mb.add_command(list_uncles,list_uncles_func)			
 mb.add_command(reload,reload_func,level=2)		
-mb.add_command(add_uncle,add_uncle_func,level=2)
+#mb.add_command(add_uncle,add_uncle_func,level=2)
 mb.add_command(type_in,type_in_func,level=1)
 mb.add_command(font_options,font_options_func,level=1)
 mb.add_command(join,join_func,level=2)
