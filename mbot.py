@@ -40,6 +40,7 @@ modnames=[
 	"mbwiki",
 	"mburban",
 	"mbdictionary",
+	"mbweather",
 	]
 for module in modnames:
 	load(module)
