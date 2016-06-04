@@ -36,8 +36,8 @@ def weather_func(nick, match,target):
 		
 		
 		
-	city=urllib.urlencode(match.group('city'))
-	req=urllib2.Request("http://api.openweathermap.org/data/2.5/{}?q={}&appid=dea3debc697fe27920ae5166c6e6594e&units={}&cnt=16".format(function,city,units))
+	city=urllib.urlencode({"q":match.group('city')})
+	req=urllib2.Request("http://api.openweathermap.org/data/2.5/{}?{}&appid=dea3debc697fe27920ae5166c6e6594e&units={}&cnt=16".format(function,city,units))
 	
 	try:
 		response=urllib2.urlopen(req)
