@@ -42,41 +42,40 @@ def weather_func(nick, match,target):
 	try:
 		response=urllib2.urlopen(req)
 		result=json.loads(response.read().decode('utf-8'))
+	
+	
+		data = {}
+		data['degrees'] = degrees
+		data['speed'] = speed
+		
+		if function == "weather":
+			data['lat']=result['coord']['lon']
+			data['lon']=result['coord']['lon']
+			data['description']=result['weather'][0]['description']
+			data['min']=result['main']['temp_min']
+			data['max']=result['main']['temp_max']
+			data['humidity']=result['main']['humidity']
+			data['wind']=result['wind']['speed']
+			data['clouds']=result['clouds']['all']
+			
+			
+			
+		else:
+			data['lat']=result['city']['coord']['lon']
+			data['lon']=result['city']['coord']['lon']
+			data['description']=result['list'][days]['weather'][0]['description']
+			data['min']=result['list'][days]['temp']['temp_min']
+			data['max']=result['list'][days]['temp']['temp_max']
+			data['humidity']=result['list'][days]['humidity']
+			data['wind']=result['list'][days]['speed']
+			data['clouds']=result['list'][days]['clouds']
+			
+			
+		answer = "{lat}lat, {lon}lon:{description},{clouds}% cloudy, temp: {min}-{max}{degrees}, humidity: {humidity}%, wind:{wind}{speed}".format(**data)
 	except:
 		mb.tell(nick+": Ouch, you broke something",target)
 		return
-	
-	data = {}
-	data['degrees'] = degrees
-	data['speed'] = speed
- 	
-	if function == "weather":
-		data['lat']=result['coord']['lon']
-		data['lon']=result['coord']['lon']
-		data['description']=result['weather'][0]['description']
-		data['min']=result['main']['temp_min']
-		data['max']=result['main']['temp_max']
-		data['humidity']=result['main']['humidity']
-		data['wind']=result['wind']['speed']
-		data['clouds']=result['clouds']['all']
-		
-		
-		
-	else:
-		data['lat']=result['city']['coord']['lon']
-		data['lon']=result['city']['coord']['lon']
-		data['description']=result['list'][days]['weather'][0]['description']
-		data['min']=result['list'][days]['temp']['temp_min']
-		data['max']=result['list'][days]['temp']['temp_max']
-		data['humidity']=result['list'][days]['humidity']
-		data['wind']=result['list'][days]['speed']
-		data['clouds']=result['list'][days]['clouds']
-		
-		
-	answer = "{lat}lat, {lon}lon:{description},{clouds}% cloudy, temp: {min}-{max}{degrees}, humidity: {humidity}%, wind:{wind}{speed}".fomat(**data)
-	
 	mb.tell(nick+": "+answer,target)
-	mb.tell(link,target,True)
 	return
 
 
