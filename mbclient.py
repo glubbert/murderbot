@@ -79,7 +79,7 @@ class mb(irc.client.SimpleIRCClient):
 		what=quirk+what
 		
 		if not mb.hexchat and action:
-			what = "\u0001ACTION "+what+"\u0001"
+			what = "\x01ACTION "+what+"\x01"
 	
 		
 		if mb.hexchat:
