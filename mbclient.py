@@ -110,6 +110,7 @@ class mb(irc.client.SimpleIRCClient):
 			sys.exit(0)
 		except:
 			traceback.print_exc()
+			print("failed to execute command")
 			
 	
 	@staticmethod

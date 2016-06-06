@@ -8,7 +8,7 @@ def weather_func(nick, match,target):
 	if F:
 		units = "imperial"
 		degrees = "F"
-		speed ="m/h"
+		speed ="mph"
 	else:
 		units = "metric"
 		degrees = "C"
