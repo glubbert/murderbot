@@ -153,7 +153,8 @@ class mb(irc.client.SimpleIRCClient):
 				func=entry['action']
 				if entry['level']==0:
 					mb.execute_command(entry['action'],**params)
-					print("executing command")
+					print("executing:")
+					print(entry["pattern"])
 				else:
 					notice={'func':func,'params':params,'level':entry['level'],'target':target,}
 					mb.notices.append(notice)
