@@ -13,7 +13,7 @@ except:
 class mb(irc.client.SimpleIRCClient):
 	server = "irc.uworld.se"
 	port = 6667
-	nickname = "MURDERB0T11"
+	nickname = "MURDERB0T"
 	murdercall=re.compile(r"""
 						^
 						(?:						#prefix
