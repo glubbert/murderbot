@@ -177,7 +177,7 @@ def send_message_func(nick,match,target):
 mb.add_command(send_message,send_message_func)
 mb.add_command(seen,seen_func)		
 
-mb.add_command(hi,hi_func,name = "hi")
+mb.add_command(hi,hi_func)
 mb.add_command(coin,coin_func)	
 mb.add_command(thank,thank_func)	
 #mb.add_command(daddy,daddy_func,priority=0)	
