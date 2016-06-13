@@ -1,3 +1,4 @@
+# coding: utf-8
 from mbclient import mb
 import json,urllib2
 whow="^how.*"
@@ -13,7 +14,7 @@ def whow_func(nick,match,target):
 	
 	
 
-mb.add_command(whow,whow_func,priority=3)
+mb.add_command(whow,whow_func,priority=99)
 
 mb.help["wikihow"]="mb how <whatever> (random steps from wikihow)"
 

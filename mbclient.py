@@ -13,7 +13,7 @@ except:
 class mb(irc.client.SimpleIRCClient):
 	server = "irc.uworld.se"
 	port = 6667
-	nickname = "MURDERB0T"
+	nickname = "MURDERB0T11"
 	murdercall=re.compile(r"""
 						^
 						(?:						#prefix
@@ -132,7 +132,6 @@ class mb(irc.client.SimpleIRCClient):
 	def execute(message,nick,target):
 	
 		
-	
 		if mb.respond(message,nick,target):
 			return
 		call=re.match(mb.murdercall,message)
@@ -144,17 +143,17 @@ class mb(irc.client.SimpleIRCClient):
 		
 		
 		for entry in mb.commands:
+			
 			if entry["call"] and not call:
 				continue
-
 			match=re.match(entry['pattern'], command)
 			if match:
 				params={'nick':nick,'match':match,'target':target}
 				func=entry['action']
 				if entry['level']==0:
+					print(match.group(0))
+					print("executing command")
 					mb.execute_command(entry['action'],**params)
-					print("executing:")
-					print(entry["pattern"])
 				else:
 					notice={'func':func,'params':params,'level':entry['level'],'target':target,}
 					mb.notices.append(notice)

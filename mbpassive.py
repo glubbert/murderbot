@@ -46,6 +46,6 @@ def  last_message_func(nick,match,target):
 	
 	
 print("loaded passive functions")
-mb.add_command(picture,picture_func,call=False, passive= True,priority=5)	
+#mb.add_command(picture,picture_func,call=False, passive= True,priority=5)	
 mb.add_command(anything,last_message_func,call=False, passive=True,priority=5)	
 mb.add_command(anything,deliver_message_func,call=False,passive=True,priority=5)

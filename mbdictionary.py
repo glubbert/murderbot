@@ -7,7 +7,7 @@ from nltk.wsd import lesk
 from math import floor
 import re
 
-measure="how\s+(?P<adjective>[\w]+)\s+(?P<be>is|are|am|was|were|will\s+be)(?:a|the)?(?:\s+(?P<who>[\w'’]+))?\s+(?P<what>[\w\s]+)"
+measure="how\s+(?P<adjective>[\w]+)\s+(?P<be>is|are|am|was|were|will\s+be)(?:a|the)?(?:\s+(?P<who>[\w']+))?\s+(?P<what>[\w\s]+)"
 antonym="what(?:'s|\s+is|\s+are|'re)\s+the\s+opposite\s+of\s+(?P<word>[\w]+)"
 synonym="what(?:'s|\s+is|\s+are|'re)\s+(?:the\s+)?(?:other|another)\s+words?\s+for\s+(?P<word>[\w]+)"
 define="(?:(?:what(?:\s+am|\s+is|\s+are|'s|'re|'m|s|re)(?:\s+(?P<lang>[\w]+)\s+for\s*)?)|(?:define)|(?P<sentiment>analyze))(?:\s+a|\s+the)?\s+(?:\"*(?:(?P<word>[\w_-]+)\"*(?:\s+as\s+in\s+(?P<meaning>[\w_\(\)]+))?$)|(?P<sentence>[,\w\s_-]+))"
@@ -145,7 +145,7 @@ def measure_func(nick,match,target):
 	elif re.search("^me$|^I$",what,flags=re.IGNORECASE):
 		what="you"
 		be="are"
-	id=hash(who.rstrip('S').rstrip('\'').rstrip("'’")+"'S"+re.sub("\s*","",what))/9223372036854775808.;
+	id=hash(who.rstrip('S').rstrip('\'').rstrip("'")+"'S"+re.sub("\s*","",what))/9223372036854775808.;
 	if id>0.5:
 		antonym=None
 		synsets=wn.synsets(adjective)
@@ -160,7 +160,7 @@ def measure_func(nick,match,target):
 		if antonym:
 			adjective=antonym
 	index=floor(id*len(mb.data['stuff']['degrees']))
-	response=mb.data['stuff']['degrees'][index]
+	response=mb.data['stuff']['degrees'][int(index)]
 	if who!="":
 		what=who+" "+what
 	response=response.replace("<what>",what)

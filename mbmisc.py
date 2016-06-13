@@ -23,11 +23,11 @@ time="time"
 
 
 
-hi="(?:hi+|he+llo+|he+y|yo+)[\s,!]+(?:mb|murderb(?:0|o)t|mbot)[\s!\.]*"
-mbhi="(?:hi+|he+llo+|he+y|yo+)[!\s\.]*"
 
-thank="(?:tha+nks?\s*(?:you)?)[\s,!]+(?:mb|murderb(?:0|o)t|mbot)[\s!\.]*"
-mbthank="(?:tha+nks?\s*(?:you)?)[!\s\.]*"
+hi="(?:hi+|he+llo+|he+y|yo+)[!\s\.]*"
+
+
+thank="(?:tha+nks?\s*(?:you)?)[!\s\.]*"
 
 
 urwelc=["pay me","love u bb","you're welcome","that's it??? for all this hard work??","what would you boobs do without me"]
@@ -72,12 +72,7 @@ def yiff_func(nick,match,target):
 
 
 
-def hi_func(nick,match,target):
-	mb.tell(nick+": "+choice(hello),target)
 
-
-def thank_func(nick,match,target):
-	mb.tell(nick+": "+choice(urwelc),target)	
 
 
 
@@ -137,9 +132,11 @@ def daddy_func(nick,match,target):
 	mb.tell("ew what the fuck is wrong with you",target)
 
 	
-	
+def hi_func(nick,match,target):
+	mb.tell(nick+": "+choice(hello),target)
 
-	
+def thank_func(nick,match,target):
+	mb.tell(nick+": "+choice(urwelc),target)	
 	
 
 def seen_func(nick,match,target):
@@ -179,11 +176,10 @@ def send_message_func(nick,match,target):
 	
 mb.add_command(send_message,send_message_func)
 mb.add_command(seen,seen_func)		
-mb.add_command(hi,hi_func,call=False)	
-mb.add_command(thank,thank_func,call=False)	
-mb.add_command(mbhi,hi_func)
+
+mb.add_command(hi,hi_func,name = "hi")
 mb.add_command(coin,coin_func)	
-mb.add_command(mbthank,thank_func)	
+mb.add_command(thank,thank_func)	
 #mb.add_command(daddy,daddy_func,priority=0)	
 #mb.add_command(parent,parent_func)	
 mb.add_command(yiff,yiff_func)	
