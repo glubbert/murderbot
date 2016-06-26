@@ -3,13 +3,13 @@ import shared
 from datetime import datetime
 
 
-picture="(.*\s+)*(?P<link>\S+\.(?:png|jpg|jpeg|gif)\S*)(\s+.*)*"
+picture="(.*\s+)*(?P<link>http\S+\.(?:png|jpg|jpeg|gif)\S*)(\s+.*)*"
 anything=".*"
 
 
 def picture_func(nick,match,target):
 	mb.data["stuff"]["last_picture"]=match.group("link")
-	mb.save("stuff");
+	mb.save("stuff")
 	
 	
 	
@@ -46,6 +46,6 @@ def  last_message_func(nick,match,target):
 	
 	
 print("loaded passive functions")
-#mb.add_command(picture,picture_func,call=False, passive= True,priority=5)	
+mb.add_command(picture,picture_func,call=False, passive= True,priority=6)	
 mb.add_command(anything,last_message_func,call=False, passive=True,priority=5)	
 mb.add_command(anything,deliver_message_func,call=False,passive=True,priority=5)
