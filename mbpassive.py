@@ -9,7 +9,9 @@ anything=".*"
 
 def picture_func(nick,match,target):
 	mb.data["stuff"]["last_picture"]=match.group("link")
+	print("saved picture link")
 	mb.save("stuff")
+	print("saved data['stuff']")
 	
 	
 	
